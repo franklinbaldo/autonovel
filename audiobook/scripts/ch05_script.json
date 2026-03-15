@@ -20,7 +20,11 @@
     },
     {
       "speaker": "NARRATOR",
-      "text": "He stood at the workshop window while his father finished the last pre-holiday check on the bells \u2014 a ritual that took two hours and involved a tuning mallet, a pitch-gauge, and that focused silence his father wore like a second skin in the workshop. Outside, the Bell Quarter was doing its slow morning stretch. A woman from two doors down was hanging washing. A boy Cass didn't recognize was kicking a stone along the center of the lane, which he would never have done on a regular day \u2014 the acoustic properties of the Bell Quarter meant sounds off the stone pavement carried a surprising distance, and kicking things was considered a minor social offense. Today, nobody cared. The boy kicked his stone. The woman hung her washing. Somewhere past the rim, someone was singing \u2014 not a contract, not a ratification, just a song, rising and falling with the careless pleasure of a voice let off its leash."
+      "text": "He stood at the workshop window while his father finished the last pre-holiday check on the bells \u2014 a ritual that took two hours and involved a tuning mallet, a pitch-gauge, and that focused silence his father wore like a second skin in the workshop. Outside, the Bell Quarter was doing its slow morning stretch. A woman from two doors down was hanging washing. A boy Cass didn't recognize was kicking a stone along the center of the lane, which he would never have done on a regular day \u2014 the acoustic properties of the Bell Quarter meant sounds off the stone pavement carried a surprising distance, and kicking things was considered a minor social offense."
+    },
+    {
+      "speaker": "NARRATOR",
+      "text": "Today, nobody cared. The boy kicked his stone. The woman hung her washing. Somewhere past the rim, someone was singing \u2014 not a contract, not a ratification, just a song, rising and falling with the careless pleasure of a voice let off its leash."
     },
     {
       "speaker": "NARRATOR",
@@ -35,83 +39,19 @@
       "text": "He could hear his own pulse."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "You'll be ready by the eleventh hour,"
-    },
-    {
-      "speaker": "TORVALD",
-      "text": "his father said from behind him. Not a question."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Wait \u2014 correcting segment order per rules."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "his father said from behind him. Not a question."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Restarting from that line with correct format."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "his father said from behind him. Not a question."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "[slowly] Chapter Five: Founding Day"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "The city slept an extra hour on Founding Day."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "But the morning Civic Pitch came forty-five minutes after sunrise like any other day, and then the bells went quiet, and the market stalls stayed shuttered, and the song-brokers locked their offices, and even the most punctual of the inner-district merchants found reasons to linger over their bread. The city breathed out. It had been holding its breath for three hundred and sixty-four days, and now it let go."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Cass had loved this since he was small."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "He stood at the workshop window while his father finished the last pre-holiday check on the bells \u2014 a ritual that took two hours and involved a tuning mallet, a pitch-gauge, and that focused silence his father wore like a second skin in the workshop. Outside, the Bell Quarter was doing its slow morning stretch. A woman from two doors down was hanging washing. A boy Cass didn't recognize was kicking a stone along the center of the lane, which he would never have done on a regular day \u2014 the acoustic properties of the Bell Quarter meant sounds off the stone pavement carried a surprising distance, and kicking things was considered a minor social offense. Today, nobody cared. The boy kicked his stone. The woman hung her washing. Somewhere past the rim, someone was singing \u2014 not a contract, not a ratification, just a song, rising and falling with the careless pleasure of a voice let off its leash."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Cass pressed his fingers against the cold glass and listened."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "No under-note. Not yet. It was there in the background most mornings \u2014 faint, persistent \u2014 but this morning the Bell Quarter was quiet enough that even the faint version had nothing to attach to. The woman hanging washing wasn't singing. His father wasn't speaking. The boy with the stone was just a boy with a stone."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "He could hear his own pulse."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "You'll be ready by the eleventh hour,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "his father said from behind him. Not a question."
+      "speaker": "EDDAN",
+      "text": "You'll be ready by the eleventh hour."
     },
     {
       "speaker": "CASS",
-      "text": "Yes,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Cass said. Then, because it was Founding Day and he was in a reasonable mood:"
+      "text": "Yes."
     },
     {
       "speaker": "CASS",
       "text": "Do you want me to carry anything? The mallet, or \u2014"
     },
     {
-      "speaker": "NARRATOR",
+      "speaker": "EDDAN",
       "text": "I'll carry the mallet."
     },
     {
@@ -132,11 +72,7 @@
     },
     {
       "speaker": "CASS",
-      "text": "Clean,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "he said."
+      "text": "Clean."
     },
     {
       "speaker": "NARRATOR",
@@ -164,43 +100,15 @@
     },
     {
       "speaker": "NARRATOR",
-      "text": "\u2014said the Forty-Third rang flat last year, but I didn't hear it\u2014"
+      "text": "A group of Academy students had clustered near the fountain, still in their gray wool even on a holiday. One of them \u2014 a third-year he vaguely recognized, tall with a copper-colored scarf that probably wasn't technically a sash but was doing its best to imply one \u2014 was holding forth about the original composition."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "You never hear anything, Da."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "I heard"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "[softly] that."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "A group of Academy students had clustered near the fountain, still in their gray wool even on a holiday, which Cass found faintly depressing. One of them \u2014 a third-year he vaguely recognized, tall with a copper-colored scarf that probably wasn't technically a sash but was doing its best to imply one \u2014 was holding forth about the original composition."
-    },
-    {
-      "speaker": "NARRATOR",
+      "speaker": "OSSIAN",
       "text": "Aldric's sequence is a D-major resolution at the end, which is why it feels complete. The major seventh before the final chord is what gives it the emotional weight. It's quite sophisticated for the period."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "It's bells,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "said the girl next to him."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "It's forty-seven bells. It doesn't have emotional weight, it has"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "[firmly] mass."
+      "speaker": "LENNE",
+      "text": "[matter-of-factly] It's bells. It's forty-seven bells. It doesn't have emotional weight, it has mass."
     },
     {
       "speaker": "NARRATOR",
@@ -208,7 +116,7 @@
     },
     {
       "speaker": "NARRATOR",
-      "text": "Closer to the tower, two small children were conducting an argument at a volume that suggested they'd been raised in the outer districts. Not a criticism."
+      "text": "Closer to the tower, two small children were conducting an argument at a volume that suggested they'd been raised in the outer districts."
     },
     {
       "speaker": "NARRATOR",
@@ -216,31 +124,11 @@
     },
     {
       "speaker": "NARRATOR",
-      "text": "You"
+      "text": "You were at the front. You moved."
     },
     {
       "speaker": "NARRATOR",
-      "text": "were"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "at the front. You moved."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "I didn't"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "move,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "I went to see the vendor and then came back and you were"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "in my spot."
+      "text": "I didn't move, I went to see the vendor and then came back and you were in my spot."
     },
     {
       "speaker": "NARRATOR",
@@ -248,78 +136,26 @@
     },
     {
       "speaker": "NARRATOR",
-      "text": "There's"
+      "text": "There's my spot."
     },
     {
       "speaker": "NARRATOR",
-      "text": "my"
+      "text": "Their mother, a broad woman in dark wool with the stained hands of someone who worked near the dye-vats, put one hand on each of their heads without looking away from the Bell Tower. Both of you, she said, will be quiet in thirty seconds or we're going home and you can hear the bells from the lane."
     },
     {
       "speaker": "NARRATOR",
-      "text": "spot."
+      "text": "Silence, immediate and complete, from both children. Cass was a little impressed."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "Their mother, a broad woman in dark wool with the stained hands of someone who worked near the dye-vats, put one hand on each of their heads without looking away from the Bell Tower."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Both of you,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "she said,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "will be quiet in thirty seconds or we're going home and you can hear the bells from the lane."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Silence, immediate and complete, from both children."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Cass was a little impressed."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "The Seventh's been running sharp,"
-    },
-    {
-      "speaker": "TORVALD",
-      "text": "his father said, beside him. Not to anyone in particular. Just noting it."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Wait \u2014 I need to correctly apply the rules throughout. The father is an unnamed character not in the known list. I will use NARRATOR for his dialogue per the rules. Let me produce the complete correct JSON now."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "The Seventh's been running sharp,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "his father said, beside him. Not to anyone in particular. Just noting it."
+      "speaker": "EDDAN",
+      "text": "The Seventh's been running sharp."
     },
     {
       "speaker": "CASS",
-      "text": "Since the last week of summer,"
+      "text": "Since the last week of summer. I heard it from the kitchen."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "Cass said."
-    },
-    {
-      "speaker": "CASS",
-      "text": "I heard it from the kitchen."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "His father glanced at him."
-    },
-    {
-      "speaker": "NARRATOR",
+      "speaker": "EDDAN",
       "text": "You didn't say."
     },
     {
@@ -327,31 +163,15 @@
       "text": "I thought you'd already caught it."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "I had."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "A pause."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "It'll need attention before the quarter-feast."
+      "speaker": "EDDAN",
+      "text": "I had. It'll need attention before the quarter-feast."
     },
     {
       "speaker": "CASS",
-      "text": "I know."
+      "text": "I know. Do you want me to \u2014"
     },
     {
-      "speaker": "NARRATOR",
-      "text": "Cass hesitated."
-    },
-    {
-      "speaker": "CASS",
-      "text": "Do you want me to \u2014"
-    },
-    {
-      "speaker": "NARRATOR",
+      "speaker": "EDDAN",
       "text": "After the holiday."
     },
     {
@@ -388,39 +208,23 @@
     },
     {
       "speaker": "NARRATOR",
-      "text": "Then the Forty-Sixth entered, a minor third above."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Then the Forty-Fifth, a perfect fourth."
+      "text": "Then the Forty-Sixth entered, a minor third above. Then the Forty-Fifth, a perfect fourth."
     },
     {
       "speaker": "NARRATOR",
       "text": "The sequence built slowly, each bell entering on its interval, the overtones of the earlier bells still ringing when the new ones joined. This was the craft of it \u2014 the bells were tuned not just to their own pitch but to the cumulative resonance of the bells that preceded them, so that each new entry found a harmonic already waiting for it in the air. Aldric had spent eleven years on this. His son had spent his whole life maintaining it."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "There,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "his father said, very quietly. Not to Cass. To himself, or to no one, or to the bells."
+      "speaker": "EDDAN",
+      "text": "[softly] There."
     },
     {
       "speaker": "NARRATOR",
       "text": "Cass looked at him."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "The Twenty-Ninth,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "his father said. He was watching the tower with the focused attention he gave the lathe."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Hear how it sits against the Thirtieth."
+      "speaker": "EDDAN",
+      "text": "[softly] The Twenty-Ninth. Hear how it sits against the Thirtieth."
     },
     {
       "speaker": "NARRATOR",
@@ -428,14 +232,10 @@
     },
     {
       "speaker": "CASS",
-      "text": "It's always done that,"
+      "text": "It's always done that."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "Cass said."
-    },
-    {
-      "speaker": "NARRATOR",
+      "speaker": "EDDAN",
       "text": "Yes."
     },
     {
@@ -443,20 +243,8 @@
       "text": "Is it a problem?"
     },
     {
-      "speaker": "NARRATOR",
-      "text": "His father was quiet for a moment. The Twenty-Eighth entered above them."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "No,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "he said."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "It's what Aldric wanted. The shimmer is intentional. I spent six years thinking it was an error before I understood that."
+      "speaker": "EDDAN",
+      "text": "No. It's what Aldric wanted. The shimmer is intentional. I spent six years thinking it was an error before I understood that."
     },
     {
       "speaker": "NARRATOR",
@@ -468,23 +256,7 @@
     },
     {
       "speaker": "NARRATOR",
-      "text": "[softly] He had never had the words for this. He had tried, once, in a journal he kept at the back of his wardrobe."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "[softly] The bells make the air heavier,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "[softly] he had written, and then crossed it out."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "[softly] The bells make the air present."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "[softly] Closer. Still not right."
+      "text": "He had never had the words for this. He had tried, once, in a journal he kept at the back of his wardrobe. The bells make the air heavier, he had written, and then crossed it out. The bells make the air present. Closer. Still not right."
     },
     {
       "speaker": "NARRATOR",
@@ -515,8 +287,8 @@
       "text": "The silence where the under-note lived was not empty. It was full of something else, something the under-note's constant presence had been sitting on top of. Without it, he could hear the thing beneath the sequence more clearly: older and lower than any of the forty-seven bells, a resonance that ran through the ground under his feet and up through the bones of his legs and settled in his chest like a question he didn't have the vocabulary to answer."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "He had not told anyone."
+      "speaker": "CASS",
+      "text": "[whisper] He had not told anyone."
     },
     {
       "speaker": "NARRATOR",
@@ -548,15 +320,7 @@
     },
     {
       "speaker": "NARRATOR",
-      "text": "He let the seconds pass uncounted. He had counted them when he was younger \u2014 had wanted to know exactly how long it lasted, had thought that knowing the number would help him hold onto it. It didn't. The silence lasted as long as it lasted, and then the crowd began to breathe again, and one of the children near the tower said"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "[softly] there,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "very softly, to her sister, and the day resumed."
+      "text": "He let the seconds pass uncounted. He had counted them when he was younger \u2014 had wanted to know exactly how long it lasted, had thought that knowing the number would help him hold onto it. It didn't. The silence lasted as long as it lasted, and then the crowd began to breathe again, and one of the children near the tower said there, very softly, to her sister, and the day resumed."
     },
     {
       "speaker": "NARRATOR",
@@ -572,11 +336,7 @@
     },
     {
       "speaker": "NARRATOR",
-      "text": "His father looked at him for three seconds."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Cass looked back."
+      "text": "His father looked at him for three seconds. Cass looked back."
     },
     {
       "speaker": "NARRATOR",
@@ -587,23 +347,15 @@
       "text": "Then he looked away, toward the Bell Tower, and the crowd began to thin around them, and the vendor with the copper pot was ladling out drinks again, and Founding Day continued."
     },
     {
-      "speaker": "NARRATOR",
+      "speaker": "EDDAN",
       "text": "Soup?"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "his father said."
     },
     {
       "speaker": "CASS",
       "text": "What?"
     },
     {
-      "speaker": "NARRATOR",
-      "text": "Cass blinked."
-    },
-    {
-      "speaker": "NARRATOR",
+      "speaker": "EDDAN",
       "text": "It's almost noon."
     },
     {
@@ -636,15 +388,7 @@
     },
     {
       "speaker": "CASS",
-      "text": "The Academy student near the fountain,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "he said."
-    },
-    {
-      "speaker": "CASS",
-      "text": "The one with the scarf. He said the sequence ends on a D-major resolution."
+      "text": "The Academy student near the fountain. The one with the scarf. He said the sequence ends on a D-major resolution."
     },
     {
       "speaker": "NARRATOR",
@@ -655,43 +399,23 @@
       "text": "He's wrong, isn't he. The final chord isn't a resolution. It's a suspension."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "His father set his spoon down. He looked at Cass with the expression he used when a student at the workshop said something almost correct."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "The seventh resolves to the octave,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "he said."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "That's a resolution."
+      "speaker": "EDDAN",
+      "text": "The seventh resolves to the octave. That's a resolution."
     },
     {
       "speaker": "CASS",
       "text": "But the bass note doesn't move. The Forty-Seventh is still ringing when the final chord lands. So it's not a clean resolution, it's \u2014"
     },
     {
-      "speaker": "NARRATOR",
-      "text": "It's both,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "his father said."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "The upper voices resolve. The bass holds."
+      "speaker": "EDDAN",
+      "text": "It's both. The upper voices resolve. The bass holds."
     },
     {
       "speaker": "NARRATOR",
       "text": "He picked up his spoon again."
     },
     {
-      "speaker": "NARRATOR",
+      "speaker": "EDDAN",
       "text": "Aldric was doing something specific with that."
     },
     {
@@ -704,14 +428,10 @@
     },
     {
       "speaker": "CASS",
-      "text": "What was he doing with it?"
+      "text": "[frustrated] What was he doing with it?"
     },
     {
-      "speaker": "NARRATOR",
-      "text": "Cass said."
-    },
-    {
-      "speaker": "NARRATOR",
+      "speaker": "EDDAN",
       "text": "Eat your bread."
     },
     {
@@ -720,18 +440,10 @@
     },
     {
       "speaker": "CASS",
-      "text": "The thing beneath the sequence,"
+      "text": "[carefully] The thing beneath the sequence. The harmonic. The low one, below the Forty-Seventh's range. Can you \u2014"
     },
     {
-      "speaker": "NARRATOR",
-      "text": "he said, keeping his voice even."
-    },
-    {
-      "speaker": "CASS",
-      "text": "The harmonic. The low one, below the Forty-Seventh's range. Can you \u2014"
-    },
-    {
-      "speaker": "NARRATOR",
+      "speaker": "EDDAN",
       "text": "Cass."
     },
     {
@@ -743,16 +455,8 @@
       "text": "His father's right hand was resting on the table beside his bowl. The tremor in it was visible, a small rhythmic motion like something ticking down."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "I hear what the bells are tuned to produce,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "his father said."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "That's all I hear."
+      "speaker": "EDDAN",
+      "text": "[firmly] I hear what the bells are tuned to produce. That's all I hear."
     },
     {
       "speaker": "NARRATOR",
@@ -760,11 +464,7 @@
     },
     {
       "speaker": "NARRATOR",
-      "text": "The kitchen smelled of the soup and old wood and, faintly, from the wall to his left, bronze."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "The locked room was through that wall."
+      "text": "The kitchen smelled of the soup and old wood and, faintly, from the wall to his left, bronze. The locked room was through that wall."
     },
     {
       "speaker": "NARRATOR",
@@ -772,11 +472,7 @@
     },
     {
       "speaker": "CASS",
-      "text": "The locked room,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Cass said."
+      "text": "The locked room."
     },
     {
       "speaker": "NARRATOR",
@@ -784,15 +480,7 @@
     },
     {
       "speaker": "CASS",
-      "text": "I'm not asking to go in,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Cass said, before his father could say whatever he was going to say."
-    },
-    {
-      "speaker": "CASS",
-      "text": "I'm asking what the bells in there are tuned to. Because I can feel them from here and they're tuned to something, and it's the same interval as the harmonic in the Civic Pitch, and I've been hearing that harmonic for six months and I'd like to know what it is."
+      "text": "I'm not asking to go in. I'm asking what the bells in there are tuned to. Because I can feel them from here and they're tuned to something, and it's the same interval as the harmonic in the Civic Pitch, and I've been hearing that harmonic for six months and I'd like to know what it is."
     },
     {
       "speaker": "NARRATOR",
@@ -800,30 +488,22 @@
     },
     {
       "speaker": "CASS",
-      "text": "I know what I heard,"
+      "text": "[tense] I know what I heard."
     },
     {
       "speaker": "NARRATOR",
-      "text": "Cass said."
+      "text": "The silence that followed was not the comfortable Founding Day silence they'd had during the first four minutes. It was the other kind \u2014 the kind with weight and edges. His father's right hand was very still now, which was, Cass had learned, worse than the tremor."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "[tense] The silence that followed was not the comfortable Founding Day silence they'd had during the first four minutes. It was the other kind \u2014 the kind with weight and edges. His father's right hand was very still now, which was, Cass had learned, worse than the tremor."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Eat your dinner,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "his father said."
+      "speaker": "EDDAN",
+      "text": "Eat your dinner."
     },
     {
       "speaker": "CASS",
       "text": "It's lunch."
     },
     {
-      "speaker": "NARRATOR",
+      "speaker": "EDDAN",
       "text": "Eat it."
     },
     {
@@ -895,36 +575,24 @@
       "text": "Cass sat with it."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "The Academy library. The blank pages at the back of Volume Four. The Voss paper that stopped mid-sentence. The interval that didn't exist in the Codex, sitting below F, the one that someone had been asking about in the Bellwright journals. Suvaine's voice, the previous afternoon, moving away from him down the Academy arcade."
+      "speaker": "CASS",
+      "text": "[whisper] The Academy library. The blank pages at the back of Volume Four. The Voss paper that stopped mid-sentence. The interval that didn't exist in the Codex, sitting below F, the one that someone had been asking about in the Bellwright journals. Suvaine's voice, the previous afternoon, moving away from him down the Academy arcade."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "Perin's letters."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "[softly] Tell him the Seventh of Ash Street always ran a quarter-flat in autumn. He'll know what to do."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Perin writing about bells the way a man writes about home when he can't write about home."
+      "speaker": "CASS",
+      "text": "[whisper] Perin's letters. Tell him the Seventh of Ash Street always ran a quarter-flat in autumn. He'll know what to do. Perin writing about bells the way a man writes about home when he can't write about home."
     },
     {
       "speaker": "NARRATOR",
       "text": "He sat there until the cold from the stone floor came through his trousers and into his legs."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "Then his father's voice came from the workshop doorway, through the house:"
-    },
-    {
-      "speaker": "NARRATOR",
+      "speaker": "EDDAN",
       "text": "Dinner in half an hour."
     },
     {
       "speaker": "NARRATOR",
-      "text": "Cass stood up. His knees ached. He pressed his once, briefly, then let it go. He looked at the locked door \u2014 the old oak, the new iron lock, the dark gap at the threshold where no light came through."
+      "text": "Cass stood up. His knees ached. He pressed his hand once, briefly, against the door, then let it go. He looked at the locked door \u2014 the old oak, the new iron lock, the dark gap at the threshold where no light came through."
     },
     {
       "speaker": "NARRATOR",
@@ -940,15 +608,7 @@
     },
     {
       "speaker": "CASS",
-      "text": "The shimmer in the Twenty-Ninth,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Cass said. He was looking at the bowls, not at his father."
-    },
-    {
-      "speaker": "CASS",
-      "text": "You said Aldric wanted it. The specific overtone when it sits against the Thirtieth."
+      "text": "The shimmer in the Twenty-Ninth. You said Aldric wanted it. The specific overtone when it sits against the Thirtieth."
     },
     {
       "speaker": "NARRATOR",
@@ -956,15 +616,7 @@
     },
     {
       "speaker": "CASS",
-      "text": "What does it do?"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Cass said."
-    },
-    {
-      "speaker": "CASS",
-      "text": "The shimmer. What's it for."
+      "text": "What does it do? The shimmer. What's it for."
     },
     {
       "speaker": "NARRATOR",
@@ -975,54 +627,17 @@
       "text": "His father was looking at the wall between the kitchen and the locked room. Not at Cass. His hand rested against the doorframe \u2014 not gripping it, just touching it, the way he touched the workshop walls, a press that checked something was still there."
     },
     {
-      "speaker": "NARRATOR",
-      "text": "It keeps the sequence honest,"
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "his father said."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Then he came in and sat down, and they ate dinner in the ordinary silence, careful and full \u2014 the silence that held things rather than rested from them."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "[slowly] Cass turned the answer over while he ate. It keeps the sequence honest. It was the most his father had said about the bells' design in years, and it was also, characteristically, an answer that opened into a larger question his father was not going to address. Keeps it honest how. Against what. Why would a sequence need to be kept honest. What would it mean if it weren't."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "He thought about the three bells in the dark behind the wall, and what they were tuned to, and the way his father had looked at him in the square this morning \u2014 not like a stranger, not like something interesting, but like something he already understood and could not speak about."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "His father knew something."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "He had known it for ten years."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "He was going to keep not saying it."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Cass put his spoon down. Picked it up again. Finished his dinner."
-    },
-    {
-      "speaker": "NARRATOR",
-      "text": "Outside, the city sang."
+      "speaker": "EDDAN",
+      "text": "[pause] It keeps the sequence honest."
     }
   ],
-  "total_segments": 253,
+  "total_segments": 157,
   "speakers": [
+    "NARRATOR",
+    "OSSIAN",
     "CASS",
-    "TORVALD",
-    "NARRATOR"
+    "LENNE",
+    "EDDAN"
   ],
-  "total_chars": 24234,
-  "original_words": 4002,
-  "script_words": 4437,
-  "coverage_pct": 110.9
+  "total_chars": 19668
 }
