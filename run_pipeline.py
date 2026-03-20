@@ -271,7 +271,7 @@ def run_foundation(state: dict) -> dict:
 
         # 2. Evaluate
         step("Evaluating foundation...")
-        eval_result = uv_run("evaluate.py --phase=foundation", timeout=300)
+        eval_result = uv_run("agents/evaluator/evaluate.py --phase=foundation", timeout=300)
         score = parse_score(eval_result.stdout, "overall_score")
         lore = parse_lore_score(eval_result.stdout)
 
@@ -335,7 +335,7 @@ def run_drafting(state: dict) -> dict:
             step(f"Attempt {attempt}/{MAX_CHAPTER_ATTEMPTS}")
 
             # Draft
-            draft_result = uv_run(f"draft_chapter.py {ch}", timeout=600)
+            draft_result = uv_run(f"agents/drafter/draft_chapter.py {ch}", timeout=600)
             if draft_result.returncode != 0:
                 step(f"Draft failed (exit {draft_result.returncode}), retrying...")
                 continue
@@ -350,7 +350,7 @@ def run_drafting(state: dict) -> dict:
             step(f"Drafted {word_count} words")
 
             # Evaluate
-            eval_result = uv_run(f"evaluate.py --chapter={ch}", timeout=300)
+            eval_result = uv_run(f"agents/evaluator/evaluate.py --chapter={ch}", timeout=300)
             score = parse_score(eval_result.stdout, "overall_score")
             step(f"Chapter {ch} score: {score}")
 
@@ -517,7 +517,7 @@ def run_revision(state: dict, max_cycles: int = MAX_REVISION_CYCLES) -> dict:
             banner(f"  Revising Ch {ch_num} ({question}) [{idx+1}/{len(consensus_items)}]", ".")
 
             # Snapshot the current chapter score for comparison
-            pre_eval = uv_run(f"evaluate.py --chapter={ch_num}", timeout=300)
+            pre_eval = uv_run(f"agents/evaluator/evaluate.py --chapter={ch_num}", timeout=300)
             pre_score = parse_score(pre_eval.stdout, "overall_score")
 
             # Generate revision brief
@@ -553,7 +553,7 @@ def run_revision(state: dict, max_cycles: int = MAX_REVISION_CYCLES) -> dict:
             uv_run(f"gen_revision.py {ch_num} {brief_file}", timeout=600)
 
             # Evaluate revised chapter
-            post_eval = uv_run(f"evaluate.py --chapter={ch_num}", timeout=300)
+            post_eval = uv_run(f"agents/evaluator/evaluate.py --chapter={ch_num}", timeout=300)
             post_score = parse_score(post_eval.stdout, "overall_score")
 
             ch_file = CHAPTERS_DIR / f"ch_{ch_num:02d}.md"
@@ -577,7 +577,7 @@ def run_revision(state: dict, max_cycles: int = MAX_REVISION_CYCLES) -> dict:
 
         # -- Step 6: Full novel evaluation --
         step("Running full novel evaluation...")
-        full_eval = uv_run("evaluate.py --full", timeout=600)
+        full_eval = uv_run("agents/evaluator/evaluate.py --full", timeout=600)
         novel_score = parse_score(full_eval.stdout, "novel_score")
 
         if novel_score < 0:
@@ -706,10 +706,10 @@ def run_export(state: dict) -> dict:
     banner("PHASE 4: EXPORT", "=")
 
     # 1. Rebuild outline from chapters
-    build_outline = BASE_DIR / "build_outline.py"
+    build_outline = BASE_DIR / "agents/outliner/build_outline.py"
     if build_outline.exists():
         step("Rebuilding outline from chapters...")
-        uv_run("build_outline.py", timeout=300)
+        uv_run("agents/outliner/build_outline.py", timeout=300)
 
     # 2. Build arc summary
     build_arc = BASE_DIR / "build_arc_summary.py"

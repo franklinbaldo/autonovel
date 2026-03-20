@@ -1,0 +1,5 @@
+{
+  "name": "evaluator",
+  "description": "Agent responsible for evaluating novel components (foundation, chapters, full novel).",
+  "role": "Evaluate text using mechanical slop detection and LLM judge."
+}

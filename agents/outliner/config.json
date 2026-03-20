@@ -1,0 +1,5 @@
+{
+  "name": "outliner",
+  "description": "Agent responsible for building the outline from chapter text.",
+  "role": "Rebuild outline.md from the actual chapters."
+}

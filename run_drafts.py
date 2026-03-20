@@ -23,7 +23,7 @@ def pattern_check(ch):
     return words, didnot, thought
 
 def spot_eval(ch):
-    out, rc = run(f'.venv/bin/python3 evaluate.py --chapter={ch}', timeout=300)
+    out, rc = run(f'.venv/bin/python3 agents/evaluator/evaluate.py --chapter={ch}', timeout=300)
     m_overall = re.search(r'overall_score: ([\d.]+)', out)
     m_raw = re.search(r'raw_judge_score: (\d+)', out)
     if m_overall and m_raw:

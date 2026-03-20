@@ -1,0 +1,5 @@
+{
+  "name": "drafter",
+  "description": "Agent responsible for drafting a single chapter using the writer model.",
+  "role": "Draft chapters based on the outline, world, characters, and previous chapter context."
+}
