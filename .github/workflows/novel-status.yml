@@ -1,0 +1,77 @@
+name: Novel — Monitor Sessions
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */2 * * *'
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    env:
+      JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Check active sessions
+        id: check
+        run: |
+          CHANGED=0
+          SESSION_DIR="sessions"
+          [ -d "$SESSION_DIR" ] || exit 0
+
+          for SESSION_FILE in "$SESSION_DIR"/*.json; do
+            [ -f "$SESSION_FILE" ] || continue
+
+            SESSION_ID=$(jq -r '.session_id' "$SESSION_FILE")
+            PHASE=$(jq -r '.phase // "unknown"' "$SESSION_FILE")
+            CHAPTER=$(jq -r '.chapter // "n/a"' "$SESSION_FILE")
+
+            RESPONSE=$(curl -s \
+              "https://jules.googleapis.com/v1alpha/sessions/$SESSION_ID" \
+              -H "x-goog-api-key: $JULES_API_KEY")
+            STATE=$(echo "$RESPONSE" | jq -r '.state // "UNKNOWN"')
+
+            echo "[$PHASE] session=$SESSION_ID state=$STATE chapter=$CHAPTER"
+
+            if [ "$STATE" = "COMPLETED" ] || [ "$STATE" = "FAILED" ]; then
+              echo "  → Archiving finished session"
+
+              # Save final state to history
+              mkdir -p sessions/history
+              TIMESTAMP=$(date -u +%Y%m%d_%H%M%S)
+              jq --arg state "$STATE" --arg finished_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+                '. + {final_state: $state, finished_at: $finished_at}' \
+                "$SESSION_FILE" > "sessions/history/${TIMESTAMP}_${PHASE}.json"
+
+              git rm "$SESSION_FILE" 2>/dev/null || rm "$SESSION_FILE"
+              CHANGED=1
+
+              if [ "$STATE" = "COMPLETED" ]; then
+                echo "  → Session completed successfully"
+              else
+                echo "  → Session FAILED"
+              fi
+            fi
+          done
+
+          echo "changed=$CHANGED" >> $GITHUB_OUTPUT
+
+      - name: Commit cleanup
+        if: steps.check.outputs.changed == '1'
+        run: |
+          git config user.name "autonovel-bot"
+          git config user.email "autonovel-bot@users.noreply.github.com"
+          git add sessions/
+          git diff --staged --quiet || \
+            git commit -m "sessions: cleanup finished sessions"
+
+          for i in 1 2 3 4; do
+            git push && break
+            echo "Push attempt $i failed, retrying in $((2**i))s..."
+            sleep $((2**i))
+          done

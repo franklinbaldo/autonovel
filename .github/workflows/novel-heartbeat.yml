@@ -1,0 +1,70 @@
+name: Novel — Heartbeat
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'heartbeat (default), force-new, status, or create'
+        required: false
+        default: 'heartbeat'
+      branch:
+        description: 'Novel branch to work on'
+        required: false
+        default: 'main'
+        type: string
+
+concurrency:
+  group: novel-heartbeat
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch || 'main' }}
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run heartbeat
+        env:
+          JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
+          GH_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+        run: |
+          MODE="${{ github.event.inputs.mode || 'heartbeat' }}"
+          python scripts/heartbeat.py status
+          echo ""
+          python scripts/heartbeat.py "$MODE"
+
+      - name: Pull latest (PRs may have been merged)
+        run: git pull --rebase --autostash || true
+
+      - name: Commit heartbeat log and session state
+        run: |
+          git config user.name "autonovel-bot"
+          git config user.email "autonovel-bot@users.noreply.github.com"
+          git add -f sessions/ state.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "heartbeat: $(date -u +%Y-%m-%d) $(date -u +%H:%M) UTC"
+            for i in 1 2 3 4; do
+              git push && break
+              echo "Push retry $i..."
+              sleep $((2**i))
+            done
+          fi

@@ -114,16 +114,74 @@ TOOLS (the pipeline machinery):
     typeset/build_tex.py -- chapters/*.md → chapters_content.tex
 
   Orchestrator:
-    run_pipeline.py      -- NEW: fully automated pipeline runner
+    run_pipeline.py      -- fully automated pipeline runner (local)
+
+GITHUB ACTIONS (CI/CD via Jules Sequence):
+  .github/workflows/
+    novel-heartbeat.yml  -- periodic pipeline progression (every 15 min)
+    novel-session.yml    -- create Jules sessions per phase (manual)
+    novel-status.yml     -- monitor and cleanup finished sessions
+
+  scripts/
+    heartbeat.py         -- session lifecycle orchestrator
+    build-novel-prompt.py -- construct phase-specific prompts
+    next-task.py         -- determine next task from state.json
+
+  sessions/
+    current.json         -- active session metadata
+    history/*.json       -- archived session records
+    heartbeats/*.json    -- heartbeat log entries
 
 CONFIG:
-  .env.example           -- API key template
+  .env.example           -- API key template (Jules + Anthropic)
   pyproject.toml         -- Python dependencies (httpx, dotenv)
   .python-version
   .gitignore
 ```
 
 ---
+
+## GitHub Actions Pipeline
+
+When `AUTONOVEL_ENGINE=jules`, the pipeline runs autonomously via GitHub Actions:
+
+```
+┌─────────────────────────────────────────────────────┐
+│              novel-heartbeat.yml (*/15 min)          │
+│                                                     │
+│  1. Check state.json for current phase              │
+│  2. Check sessions/current.json for active session  │
+│  3. Query Jules API for session state               │
+│  4. If session active → send continuation           │
+│  5. If session done → archive, determine next task  │
+│  6. If no session → create new session for next     │
+│  7. Commit session state + heartbeat log            │
+└─────────────────────────────────────────────────────┘
+
+Jules sessions use AUTO_CREATE_PR mode:
+  - Jules works on the repo directly
+  - Creates PRs with changes (world.md, chapters, etc.)
+  - Pipeline merges PRs and advances state
+
+Session lifecycle (the Jules Sequence):
+  CREATE → AWAITING_PLAN → IN_PROGRESS → COMPLETED
+```
+
+### Required Secrets
+- `JULES_API_KEY` -- Google Cloud API key with Jules access
+- `GH_PAT` -- GitHub PAT for workflow dispatch and PR operations
+
+### Manual Operation
+```bash
+# Start a specific phase manually
+gh workflow run novel-session.yml -f phase=foundation -f branch=my-novel
+
+# Check status
+gh workflow run novel-heartbeat.yml -f mode=status
+
+# Force new session
+gh workflow run novel-heartbeat.yml -f mode=force-new
+```
 
 ## Per-Novel Branch (Generated)
 
