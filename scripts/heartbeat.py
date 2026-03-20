@@ -115,46 +115,62 @@ def _agent_sessions_dir(agent_name):
     return d
 
 
+def _list_active_sessions(agent_name):
+    """List active session files for an agent (newest first)."""
+    d = _agent_sessions_dir(agent_name)
+    return sorted(d.glob("*.json"), key=lambda f: f.stat().st_mtime, reverse=True)
+
+
 def load_current_session(agent_name=None):
-    """Load active session metadata for an agent, or global fallback."""
+    """Load newest active session for an agent, or global fallback."""
     if agent_name:
-        path = _agent_sessions_dir(agent_name) / "current.json"
-    else:
-        path = SESSIONS_DIR / "current.json"
+        for path in _list_active_sessions(agent_name):
+            try:
+                return json.loads(path.read_text())
+            except (json.JSONDecodeError, OSError):
+                continue
+        return None
+    # Legacy global fallback
+    path = SESSIONS_DIR / "current.json"
     if path.exists():
         return json.loads(path.read_text())
     return None
 
 
 def save_current_session(session_data, agent_name=None):
-    """Save active session metadata for an agent."""
+    """Save session as individual file named by session_id."""
+    session_id = session_data.get("session_id", "unknown")
     if agent_name:
-        path = _agent_sessions_dir(agent_name) / "current.json"
+        path = _agent_sessions_dir(agent_name) / f"{session_id}.json"
     else:
         SESSIONS_DIR.mkdir(parents=True, exist_ok=True)
-        path = SESSIONS_DIR / "current.json"
+        path = SESSIONS_DIR / f"{session_id}.json"
     path.write_text(json.dumps(session_data, indent=2) + "\n")
 
 
 def archive_session(session_data, final_state="COMPLETED", agent_name=None):
-    """Move session to agent-level or global history."""
-    if agent_name:
-        hist_dir = _agent_sessions_dir(agent_name) / "history"
-        current = _agent_sessions_dir(agent_name) / "current.json"
-    else:
-        hist_dir = HISTORY_DIR
-        current = SESSIONS_DIR / "current.json"
-
-    hist_dir.mkdir(parents=True, exist_ok=True)
-    ts = now_utc().strftime("%Y%m%d_%H%M%S")
-    phase = session_data.get("phase", "unknown")
+    """Move session file to history/ subdirectory."""
+    session_id = session_data.get("session_id", "unknown")
     session_data["final_state"] = final_state
     session_data["finished_at"] = now_utc().isoformat()
-    (hist_dir / f"{ts}_{phase}.json").write_text(
+
+    if agent_name:
+        hist_dir = _agent_sessions_dir(agent_name) / "history"
+        active_file = _agent_sessions_dir(agent_name) / f"{session_id}.json"
+    else:
+        hist_dir = HISTORY_DIR
+        active_file = SESSIONS_DIR / f"{session_id}.json"
+
+    hist_dir.mkdir(parents=True, exist_ok=True)
+    (hist_dir / f"{session_id}.json").write_text(
         json.dumps(session_data, indent=2) + "\n"
     )
-    if current.exists():
-        current.unlink()
+    if active_file.exists():
+        active_file.unlink()
+    # Clean up legacy current.json if it exists
+    legacy = (SESSIONS_DIR / "current.json")
+    if not agent_name and legacy.exists():
+        legacy.unlink()
 
 
 def get_session_state(session_id):

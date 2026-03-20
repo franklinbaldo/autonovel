@@ -112,34 +112,49 @@ def _agent_sessions_dir(agent_name):
     return d
 
 
+def _list_active_sessions(agent_name):
+    """List all active session files for an agent (newest first)."""
+    d = _agent_sessions_dir(agent_name)
+    files = sorted(d.glob("*.json"), key=lambda f: f.stat().st_mtime, reverse=True)
+    return files
+
+
 def _load_agent_session(agent_name):
-    """Load the active session for an agent. Returns dict or None."""
-    session_file = _agent_sessions_dir(agent_name) / "current.json"
-    if session_file.exists():
+    """Load the newest active session for an agent. Returns (data, path) or (None, None)."""
+    for path in _list_active_sessions(agent_name):
         try:
-            return json.loads(session_file.read_text())
+            data = json.loads(path.read_text())
+            return data, path
         except (json.JSONDecodeError, OSError):
-            return None
-    return None
+            continue
+    return None, None
 
 
 def _save_agent_session(agent_name, session_data):
-    """Save session metadata for an agent."""
-    session_file = _agent_sessions_dir(agent_name) / "current.json"
+    """Save session metadata as individual file named by session_id."""
+    session_id = session_data.get("session_id", "unknown")
+    session_file = _agent_sessions_dir(agent_name) / f"{session_id}.json"
     session_file.write_text(json.dumps(session_data, indent=2) + "\n")
 
 
 def _archive_agent_session(agent_name, session_data, final_state="COMPLETED"):
-    """Archive a completed session and clear current."""
+    """Move session file to history/ subdirectory."""
+    session_id = session_data.get("session_id", "unknown")
     history_dir = _agent_sessions_dir(agent_name) / "history"
     history_dir.mkdir(parents=True, exist_ok=True)
-    ts = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
+
     session_data["final_state"] = final_state
     session_data["finished_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-    (history_dir / f"{ts}.json").write_text(json.dumps(session_data, indent=2) + "\n")
-    current = _agent_sessions_dir(agent_name) / "current.json"
-    if current.exists():
-        current.unlink()
+
+    # Write to history
+    (history_dir / f"{session_id}.json").write_text(
+        json.dumps(session_data, indent=2) + "\n"
+    )
+
+    # Remove from active
+    active_file = _agent_sessions_dir(agent_name) / f"{session_id}.json"
+    if active_file.exists():
+        active_file.unlink()
 
 
 def _is_session_valid(session_data):
@@ -332,7 +347,7 @@ TASK:
     title = f"{prefix}:{title_suffix}" if title_suffix else prefix
 
     # --- Session reuse: check for active session for this agent ---
-    existing = _load_agent_session(agent_name)
+    existing, _existing_path = _load_agent_session(agent_name)
     session_id = None
     reused = False
 
@@ -411,8 +426,9 @@ TASK:
     elapsed = time.time() - start
 
     if state == "FAILED":
+        saved, _ = _load_agent_session(agent_name)
         _archive_agent_session(agent_name,
-                               _load_agent_session(agent_name) or {"session_id": session_id},
+                               saved or {"session_id": session_id},
                                "FAILED")
         raise RuntimeError(f"Jules session {session_id} failed after {elapsed:.0f}s")
 
@@ -428,8 +444,9 @@ TASK:
     result = _extract_text_from_activities(activities)
 
     if not result.strip():
+        saved_empty, _ = _load_agent_session(agent_name)
         _archive_agent_session(agent_name,
-                               _load_agent_session(agent_name) or {"session_id": session_id},
+                               saved_empty or {"session_id": session_id},
                                "EMPTY")
         raise RuntimeError(
             f"Jules session {session_id} completed but produced no text output. "
@@ -437,9 +454,9 @@ TASK:
         )
 
     # Archive completed session
-    saved = _load_agent_session(agent_name)
-    if saved:
-        _archive_agent_session(agent_name, saved, "COMPLETED")
+    saved_done, _ = _load_agent_session(agent_name)
+    if saved_done:
+        _archive_agent_session(agent_name, saved_done, "COMPLETED")
 
     print(f"  [jules] session {session_id} complete ({elapsed:.0f}s, "
           f"{len(result)} chars, agent={agent_name}, "
