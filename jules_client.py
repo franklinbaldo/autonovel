@@ -39,6 +39,9 @@ JULES_SOURCE_REPO = os.environ.get("JULES_SOURCE_REPO", "")
 JULES_POLL_INTERVAL = float(os.environ.get("JULES_POLL_INTERVAL", "3"))
 JULES_MAX_WAIT = float(os.environ.get("JULES_MAX_WAIT", "900"))  # 15 min default
 
+# Session TTL: reuse sessions younger than this (seconds)
+JULES_SESSION_TTL = float(os.environ.get("JULES_SESSION_TTL", str(12 * 3600)))
+
 # Session title prefixes per role
 ROLE_PREFIXES = {
     "writer": "autonovel:draft",
@@ -48,6 +51,109 @@ ROLE_PREFIXES = {
 
 # Terminal session states
 TERMINAL_STATES = {"COMPLETED", "FAILED", "CANCELLED"}
+ACTIVE_STATES = {"IN_PROGRESS", "WAITING_FOR_USER_RESPONSE", "AWAITING_PLAN_APPROVAL"}
+
+# --- Per-agent session persistence (Verne protocol) ---
+AGENTS_DIR = BASE_DIR / "agents"
+
+# Map roles to agent names for session tracking
+ROLE_TO_AGENT = {
+    "writer": None,       # resolved dynamically from title_suffix
+    "judge": "evaluator",
+    "review": "reviewer",
+}
+
+# Map title_suffix hints to agent names
+SUFFIX_TO_AGENT = {
+    "world": "foundation",
+    "characters": "foundation",
+    "outline": "foundation",
+    "outline2": "foundation",
+    "canon": "foundation",
+    "seed": "foundation",
+    "voice": "foundation",
+    "fingerprint": "foundation",
+    "draft": "drafter",
+    "chapter": "drafter",
+    "eval": "evaluator",
+    "adversarial": "evaluator",
+    "compare": "evaluator",
+    "panel": "reviewer",
+    "review": "reviewer",
+    "brief": "reviser",
+    "revision": "reviser",
+    "cuts": "reviser",
+    "export": "exporter",
+    "outline_export": "exporter",
+    "arc": "exporter",
+}
+
+
+def _resolve_agent(role, title_suffix=""):
+    """Resolve the agent name from role + title_suffix."""
+    # Direct mapping from role
+    agent = ROLE_TO_AGENT.get(role)
+    if agent:
+        return agent
+    # Try title_suffix lookup
+    if title_suffix:
+        suffix_lower = title_suffix.lower()
+        for key, agent_name in SUFFIX_TO_AGENT.items():
+            if key in suffix_lower:
+                return agent_name
+    # Fallback by role
+    return {"writer": "foundation", "judge": "evaluator", "review": "reviewer"}.get(role, "foundation")
+
+
+def _agent_sessions_dir(agent_name):
+    """Get the active-sessions directory for an agent."""
+    d = AGENTS_DIR / agent_name / "active-sessions"
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
+def _load_agent_session(agent_name):
+    """Load the active session for an agent. Returns dict or None."""
+    session_file = _agent_sessions_dir(agent_name) / "current.json"
+    if session_file.exists():
+        try:
+            return json.loads(session_file.read_text())
+        except (json.JSONDecodeError, OSError):
+            return None
+    return None
+
+
+def _save_agent_session(agent_name, session_data):
+    """Save session metadata for an agent."""
+    session_file = _agent_sessions_dir(agent_name) / "current.json"
+    session_file.write_text(json.dumps(session_data, indent=2) + "\n")
+
+
+def _archive_agent_session(agent_name, session_data, final_state="COMPLETED"):
+    """Archive a completed session and clear current."""
+    history_dir = _agent_sessions_dir(agent_name) / "history"
+    history_dir.mkdir(parents=True, exist_ok=True)
+    ts = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
+    session_data["final_state"] = final_state
+    session_data["finished_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    (history_dir / f"{ts}.json").write_text(json.dumps(session_data, indent=2) + "\n")
+    current = _agent_sessions_dir(agent_name) / "current.json"
+    if current.exists():
+        current.unlink()
+
+
+def _is_session_valid(session_data):
+    """Check if a saved session is still potentially active (not expired)."""
+    created = session_data.get("created_at", "")
+    if not created:
+        return False
+    try:
+        from datetime import datetime, timezone
+        created_dt = datetime.fromisoformat(created.replace("Z", "+00:00"))
+        age_secs = (datetime.now(timezone.utc) - created_dt).total_seconds()
+        return age_secs < JULES_SESSION_TTL
+    except (ValueError, TypeError):
+        return False
 
 
 def _headers():
@@ -178,14 +284,14 @@ def _extract_text_from_activities(activities):
 def jules_sequence(prompt, system=None, role="writer", title_suffix="",
                    max_wait=None, poll_interval=None):
     """
-    Execute the full Jules Sequence:
-      1. Create session with prompt
-      2. Auto-approve plan if needed
-      3. Poll until completion
-      4. Extract and return the generated text
-
-    This is the core cognitive motor -- every creative or evaluative task
-    flows through this sequence.
+    Execute the full Jules Sequence with per-agent session reuse:
+      1. Check for existing active session for this agent
+      2. If active: send continuation message (reuse session)
+      3. If none: create new session with prompt
+      4. Auto-approve plan if needed
+      5. Poll until completion
+      6. Extract and return the generated text
+      7. Archive session when terminal
 
     Args:
         prompt: The full task prompt (system + user context combined)
@@ -207,6 +313,9 @@ def jules_sequence(prompt, system=None, role="writer", title_suffix="",
     if poll_interval is None:
         poll_interval = JULES_POLL_INTERVAL
 
+    # Resolve which agent this call belongs to
+    agent_name = _resolve_agent(role, title_suffix)
+
     # Build the full prompt (Jules doesn't have a separate system field,
     # so we prepend it as context)
     full_prompt = prompt
@@ -219,26 +328,68 @@ def jules_sequence(prompt, system=None, role="writer", title_suffix="",
 TASK:
 {prompt}"""
 
-    # Create session
     prefix = ROLE_PREFIXES.get(role, "autonovel")
     title = f"{prefix}:{title_suffix}" if title_suffix else prefix
-    print(f"  [jules] creating session: {title}", file=sys.stderr)
 
-    session = create_session(title, full_prompt)
-    session_id = _extract_session_id(session)
-    state = session.get("state", "UNKNOWN")
-    print(f"  [jules] session {session_id} state: {state}", file=sys.stderr)
+    # --- Session reuse: check for active session for this agent ---
+    existing = _load_agent_session(agent_name)
+    session_id = None
+    reused = False
 
-    # Phase 2: Auto-approve plan if needed
+    if existing and _is_session_valid(existing):
+        old_id = existing.get("session_id", "")
+        if old_id:
+            try:
+                api_state = get_session(old_id).get("state", "UNKNOWN")
+            except Exception:
+                api_state = "UNKNOWN"
+
+            if api_state in ACTIVE_STATES:
+                # Reuse: send continuation message with new task
+                print(f"  [jules] reusing session {old_id} for {agent_name} "
+                      f"(state: {api_state})", file=sys.stderr)
+                send_message(old_id, full_prompt)
+                session_id = old_id
+                reused = True
+            elif api_state in TERMINAL_STATES:
+                # Session finished — archive it
+                print(f"  [jules] archiving finished session {old_id} "
+                      f"({api_state})", file=sys.stderr)
+                _archive_agent_session(agent_name, existing, api_state)
+            else:
+                # Unknown state — archive and start fresh
+                _archive_agent_session(agent_name, existing, api_state)
+
+    # --- Create new session if no reuse ---
+    if session_id is None:
+        print(f"  [jules] creating session for {agent_name}: {title}",
+              file=sys.stderr)
+        session = create_session(title, full_prompt)
+        session_id = _extract_session_id(session)
+        state = session.get("state", "UNKNOWN")
+        print(f"  [jules] session {session_id} state: {state}", file=sys.stderr)
+
+        # Persist session for future reuse
+        _save_agent_session(agent_name, {
+            "session_id": session_id,
+            "agent": agent_name,
+            "role": role,
+            "title": title,
+            "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        })
+    else:
+        session = get_session(session_id)
+        state = session.get("state", "UNKNOWN")
+
+    # --- Poll loop: auto-approve plans & wait for completion ---
     start = time.time()
-    plan_approved = False
+    plan_approved = reused  # skip plan approval if reusing
 
     while time.time() - start < max_wait:
         if state in TERMINAL_STATES:
             break
 
         if state == "AWAITING_PLAN_APPROVAL" and not plan_approved:
-            # Fetch activities to find the plan ID
             acts = get_activities(session_id)
             plan_id = "auto"
             for act in acts.get("activities", []):
@@ -251,7 +402,7 @@ TASK:
             print(f"  [jules] auto-approving plan: {plan_id}", file=sys.stderr)
             approve_plan(session_id, plan_id)
             plan_approved = True
-            time.sleep(1)  # Brief pause after approval
+            time.sleep(1)
 
         time.sleep(poll_interval)
         session = get_session(session_id)
@@ -260,6 +411,9 @@ TASK:
     elapsed = time.time() - start
 
     if state == "FAILED":
+        _archive_agent_session(agent_name,
+                               _load_agent_session(agent_name) or {"session_id": session_id},
+                               "FAILED")
         raise RuntimeError(f"Jules session {session_id} failed after {elapsed:.0f}s")
 
     if state not in TERMINAL_STATES:
@@ -268,19 +422,28 @@ TASK:
             f"(max_wait={max_wait}s)"
         )
 
-    # Phase 3: Extract result from activities
+    # --- Extract result from activities ---
     acts = get_activities(session_id)
     activities = acts.get("activities", [])
     result = _extract_text_from_activities(activities)
 
     if not result.strip():
+        _archive_agent_session(agent_name,
+                               _load_agent_session(agent_name) or {"session_id": session_id},
+                               "EMPTY")
         raise RuntimeError(
             f"Jules session {session_id} completed but produced no text output. "
             f"Activities: {json.dumps(activities[:3], indent=2)}"
         )
 
+    # Archive completed session
+    saved = _load_agent_session(agent_name)
+    if saved:
+        _archive_agent_session(agent_name, saved, "COMPLETED")
+
     print(f"  [jules] session {session_id} complete ({elapsed:.0f}s, "
-          f"{len(result)} chars)", file=sys.stderr)
+          f"{len(result)} chars, agent={agent_name}, "
+          f"{'reused' if reused else 'new'})", file=sys.stderr)
 
     return result
 

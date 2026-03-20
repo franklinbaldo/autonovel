@@ -8,3 +8,10 @@ __pycache__/
 typeset/*.pdf
 typeset/chapters_content.tex
 *.pdf
+
+# Per-agent session state (tracked locally, not committed)
+agents/*/active-sessions/current.json
+agents/*/active-sessions/history/
+sessions/heartbeats/
+sessions/history/
+sessions/current.json

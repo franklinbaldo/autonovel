@@ -29,6 +29,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.parent
+AGENTS_DIR = BASE_DIR / "agents"
 SESSIONS_DIR = BASE_DIR / "sessions"
 HISTORY_DIR = SESSIONS_DIR / "history"
 HEARTBEAT_DIR = BASE_DIR / "sessions" / "heartbeats"
@@ -42,7 +43,15 @@ SESSION_TTL_HOURS = 12
 
 # Terminal states
 TERMINAL_STATES = {"COMPLETED", "FAILED", "CANCELLED"}
-ACTIVE_STATES = {"IN_PROGRESS", "WAITING_FOR_USER_RESPONSE"}
+ACTIVE_STATES = {"IN_PROGRESS", "WAITING_FOR_USER_RESPONSE", "AWAITING_PLAN_APPROVAL"}
+
+# Phase → agent mapping
+PHASE_TO_AGENT = {
+    "foundation": "foundation",
+    "drafting": "drafter",
+    "revision": "reviser",
+    "export": "exporter",
+}
 
 
 def now_utc():
@@ -99,33 +108,51 @@ def save_state(state):
     STATE_FILE.write_text(json.dumps(state, indent=2) + "\n")
 
 
-def load_current_session():
-    """Load active session metadata, or None."""
-    path = SESSIONS_DIR / "current.json"
+def _agent_sessions_dir(agent_name):
+    """Get the active-sessions directory for an agent."""
+    d = AGENTS_DIR / agent_name / "active-sessions"
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
+def load_current_session(agent_name=None):
+    """Load active session metadata for an agent, or global fallback."""
+    if agent_name:
+        path = _agent_sessions_dir(agent_name) / "current.json"
+    else:
+        path = SESSIONS_DIR / "current.json"
     if path.exists():
         return json.loads(path.read_text())
     return None
 
 
-def save_current_session(session_data):
-    """Save active session metadata."""
-    SESSIONS_DIR.mkdir(parents=True, exist_ok=True)
-    (SESSIONS_DIR / "current.json").write_text(
-        json.dumps(session_data, indent=2) + "\n"
-    )
+def save_current_session(session_data, agent_name=None):
+    """Save active session metadata for an agent."""
+    if agent_name:
+        path = _agent_sessions_dir(agent_name) / "current.json"
+    else:
+        SESSIONS_DIR.mkdir(parents=True, exist_ok=True)
+        path = SESSIONS_DIR / "current.json"
+    path.write_text(json.dumps(session_data, indent=2) + "\n")
 
 
-def archive_session(session_data, final_state="COMPLETED"):
-    """Move session to history."""
-    HISTORY_DIR.mkdir(parents=True, exist_ok=True)
+def archive_session(session_data, final_state="COMPLETED", agent_name=None):
+    """Move session to agent-level or global history."""
+    if agent_name:
+        hist_dir = _agent_sessions_dir(agent_name) / "history"
+        current = _agent_sessions_dir(agent_name) / "current.json"
+    else:
+        hist_dir = HISTORY_DIR
+        current = SESSIONS_DIR / "current.json"
+
+    hist_dir.mkdir(parents=True, exist_ok=True)
     ts = now_utc().strftime("%Y%m%d_%H%M%S")
     phase = session_data.get("phase", "unknown")
     session_data["final_state"] = final_state
     session_data["finished_at"] = now_utc().isoformat()
-    (HISTORY_DIR / f"{ts}_{phase}.json").write_text(
+    (hist_dir / f"{ts}_{phase}.json").write_text(
         json.dumps(session_data, indent=2) + "\n"
     )
-    current = SESSIONS_DIR / "current.json"
     if current.exists():
         current.unlink()
 
@@ -244,12 +271,13 @@ def create_session(phase, chapter=None, hint=""):
     prompt = build_prompt(phase, chapter, hint)
     repo = get_repo_name()
     branch = get_current_branch()
+    agent_name = PHASE_TO_AGENT.get(phase, phase)
 
     title = f"autonovel:{phase}"
     if chapter:
         title += f":ch{chapter}"
 
-    print(f"  Creating session: {title}")
+    print(f"  Creating session: {title} (agent: {agent_name})")
     print(f"  Source: {repo} (branch: {branch})")
     print(f"  Prompt: {len(prompt)} chars")
 
@@ -271,13 +299,14 @@ def create_session(phase, chapter=None, hint=""):
 
     session_data = {
         "session_id": session_id,
+        "agent": agent_name,
         "phase": phase,
         "chapter": chapter,
         "hint": hint,
         "branch": branch,
         "created_at": now_utc().isoformat(),
     }
-    save_current_session(session_data)
+    save_current_session(session_data, agent_name=agent_name)
     return session_data
 
 
@@ -304,10 +333,19 @@ def log_heartbeat(action, details=""):
 # ── Commands ──────────────────────────────────────────────────────
 
 
+def _discover_agents():
+    """Find all agent directories that have active-sessions/."""
+    agents = []
+    if AGENTS_DIR.exists():
+        for d in sorted(AGENTS_DIR.iterdir()):
+            if d.is_dir() and (d / "active-sessions").is_dir():
+                agents.append(d.name)
+    return agents
+
+
 def cmd_status():
     """Show current pipeline and session status."""
     state = load_state()
-    session = load_current_session()
 
     print("=== Pipeline State ===")
     print(f"  Phase:            {state.get('phase')}")
@@ -317,18 +355,36 @@ def cmd_status():
     print(f"  Novel score:      {state.get('novel_score')}/10")
     print(f"  Revision cycle:   {state.get('revision_cycle')}")
 
-    if session:
-        session_id = session.get("session_id")
+    # Show per-agent sessions
+    agents = _discover_agents()
+    has_active = False
+    for agent_name in agents:
+        session = load_current_session(agent_name=agent_name)
+        if session:
+            has_active = True
+            session_id = session.get("session_id")
+            api_state = get_session_state(session_id)
+            print(f"\n=== Agent: {agent_name} ===")
+            print(f"  Session: {session_id}")
+            print(f"  Phase:   {session.get('phase')}")
+            print(f"  Chapter: {session.get('chapter', 'n/a')}")
+            print(f"  Created: {session.get('created_at')}")
+            print(f"  State:   {api_state}")
+            print(f"  Expired: {is_session_expired(session)}")
+
+    # Fallback: check global session
+    global_session = load_current_session()
+    if global_session:
+        has_active = True
+        session_id = global_session.get("session_id")
         api_state = get_session_state(session_id)
-        print(f"\n=== Active Session ===")
+        print(f"\n=== Global Session (legacy) ===")
         print(f"  ID:      {session_id}")
-        print(f"  Phase:   {session.get('phase')}")
-        print(f"  Chapter: {session.get('chapter', 'n/a')}")
-        print(f"  Created: {session.get('created_at')}")
+        print(f"  Phase:   {global_session.get('phase')}")
         print(f"  State:   {api_state}")
-        print(f"  Expired: {is_session_expired(session)}")
-    else:
-        print("\n  No active session")
+
+    if not has_active:
+        print("\n  No active sessions")
 
     # Next task
     task = determine_next_task(state)
@@ -344,9 +400,8 @@ def cmd_status():
 
 
 def cmd_heartbeat(force_new=False):
-    """Main heartbeat loop: check session, create/continue as needed."""
+    """Main heartbeat loop: check per-agent sessions, create/continue as needed."""
     state = load_state()
-    session = load_current_session()
 
     # Check if pipeline is done
     task = determine_next_task(state)
@@ -355,43 +410,54 @@ def cmd_heartbeat(force_new=False):
         log_heartbeat("noop", "pipeline complete")
         return
 
-    # Check existing session
+    phase = task["phase"]
+    agent_name = PHASE_TO_AGENT.get(phase, phase)
+
+    # Check existing session for this agent
+    session = load_current_session(agent_name=agent_name)
+
     if session and not force_new:
         session_id = session.get("session_id")
         api_state = get_session_state(session_id)
-        print(f"Session {session_id}: {api_state}")
+        print(f"Agent {agent_name} session {session_id}: {api_state}")
 
         if api_state in ACTIVE_STATES:
             if is_session_expired(session):
                 print("  Session expired (TTL), archiving and creating new")
-                archive_session(session, "EXPIRED")
+                archive_session(session, "EXPIRED", agent_name=agent_name)
             else:
                 send_continuation(session_id)
-                log_heartbeat("continuation", f"session={session_id}")
+                log_heartbeat("continuation",
+                              f"agent={agent_name} session={session_id}")
                 return
 
         if api_state in TERMINAL_STATES:
             print(f"  Session {api_state}, archiving")
-            archive_session(session, api_state)
+            archive_session(session, api_state, agent_name=agent_name)
             # Re-check state (session may have advanced the pipeline)
             state = load_state()
             task = determine_next_task(state)
             if task is None:
                 print("Pipeline complete after session finished")
-                log_heartbeat("complete", f"session={session_id}")
+                log_heartbeat("complete",
+                              f"agent={agent_name} session={session_id}")
                 return
+            # Task may have changed agent
+            phase = task["phase"]
+            agent_name = PHASE_TO_AGENT.get(phase, phase)
 
     # Create new session for next task
-    phase = task["phase"]
     chapter = task.get("chapter")
     hint = task.get("hint", "")
 
-    print(f"\nCreating session for: {phase}" +
+    print(f"\nCreating session for agent {agent_name}: {phase}" +
           (f" ch{chapter}" if chapter else ""))
 
     try:
         new_session = create_session(phase, chapter, hint)
-        log_heartbeat("create", f"phase={phase} session={new_session['session_id']}")
+        log_heartbeat("create",
+                      f"agent={agent_name} phase={phase} "
+                      f"session={new_session['session_id']}")
     except Exception as e:
         print(f"  Error creating session: {e}", file=sys.stderr)
         log_heartbeat("error", str(e))
