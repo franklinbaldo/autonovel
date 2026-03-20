@@ -15,7 +15,10 @@ import re
 import sys
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+from _paths import REPO_ROOT
+BASE_DIR = REPO_ROOT
 CHAPTERS_DIR = BASE_DIR / "chapters"
 EDIT_LOGS_DIR = BASE_DIR / "edit_logs"
 EVAL_LOGS_DIR = BASE_DIR / "eval_logs"

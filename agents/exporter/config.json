@@ -1,0 +1,12 @@
+{
+  "name": "exporter",
+  "description": "Rebuilds outline from final chapters, generates arc summaries, and assembles the manuscript for typesetting",
+  "role": "exporter",
+  "scripts": [
+    "build_outline.py",
+    "build_arc_summary.py"
+  ],
+  "reads": ["chapters/ch_*.md", "outline.md"],
+  "writes": ["outline.md", "arc_summary.md"],
+  "source_repo": "franklinbaldo/autonovel"
+}

@@ -82,7 +82,7 @@ generate or improve these files in the repository:
 {"Generate all foundation documents from scratch." if iteration == 0 else
  f"Improve the foundation documents. Previous scores: foundation={prev_score}, lore={prev_lore}. Focus on the weakest dimensions."}
 
-After generating/updating the files, run `python evaluate.py --phase=foundation`
+After generating/updating the files, run `python agents/evaluator/evaluate.py --phase=foundation`
 to score the results. Keep iterating until foundation_score >= 7.5 AND lore_score >= 7.0.
 
 Update `state.json` with the new scores after evaluation.
@@ -109,8 +109,8 @@ def build_drafting_prompt(state, chapter=None, hint=""):
 
     return f"""# AUTONOVEL: Draft Chapter {chapter}
 
-You are writing Chapter {chapter} of the novel. Use `draft_chapter.py {chapter}`
-to generate the chapter, then `evaluate.py --chapter={chapter}` to score it.
+You are writing Chapter {chapter} of the novel. Use `agents/drafter/draft_chapter.py {chapter}`
+to generate the chapter, then `agents/evaluator/evaluate.py --chapter={chapter}` to score it.
 
 The chapter must score >= 6.0 to keep. If it scores lower, retry (max 5 attempts).
 
@@ -137,8 +137,8 @@ The chapter must score >= 6.0 to keep. If it scores lower, retry (max 5 attempts
 {anti_patterns}
 
 ## TASK
-1. Run: `python draft_chapter.py {chapter}`
-2. Run: `python evaluate.py --chapter={chapter}`
+1. Run: `python agents/drafter/draft_chapter.py {chapter}`
+2. Run: `python agents/evaluator/evaluate.py --chapter={chapter}`
 3. If score >= 6.0: update state.json (chapters_drafted += 1), commit
 4. If score < 6.0: discard and retry
 5. After all chapters drafted, move state.json phase to "revision"
@@ -159,14 +159,14 @@ def build_revision_prompt(state, chapter=None, hint=""):
 
 You are improving the novel through systematic revision. Follow this sequence:
 
-1. Run `python adversarial_edit.py all` -- identify weak passages
-2. Run `python apply_cuts.py all --types OVER-EXPLAIN REDUNDANT` -- mechanical cuts
-3. Run `python reader_panel.py` -- 4-persona evaluation
+1. Run `python agents/evaluator/adversarial_edit.py all` -- identify weak passages
+2. Run `python agents/reviser/apply_cuts.py all --types OVER-EXPLAIN REDUNDANT` -- mechanical cuts
+3. Run `python agents/reviewer/reader_panel.py` -- 4-persona evaluation
 4. For each consensus item from the panel:
-   a. `python gen_brief.py --panel <chapter>` -- generate revision brief
-   b. `python gen_revision.py <chapter> <brief>` -- rewrite chapter
-   c. `python evaluate.py --chapter=<chapter>` -- verify improvement
-5. Run `python evaluate.py --full` -- novel-level evaluation
+   a. `python agents/reviser/gen_brief.py --panel <chapter>` -- generate revision brief
+   b. `python agents/reviser/gen_revision.py <chapter> <brief>` -- rewrite chapter
+   c. `python agents/evaluator/evaluate.py --chapter=<chapter>` -- verify improvement
+5. Run `python agents/evaluator/evaluate.py --full` -- novel-level evaluation
 6. Update state.json with new novel_score and revision_cycle
 
 ## CURRENT STATE
@@ -191,8 +191,8 @@ def build_export_prompt(state, hint=""):
 
 Final assembly of the novel. Run these in order:
 
-1. `python build_outline.py` -- rebuild outline from final chapters
-2. `python build_arc_summary.py` -- build chapter summaries
+1. `python agents/exporter/build_outline.py` -- rebuild outline from final chapters
+2. `python agents/exporter/build_arc_summary.py` -- build chapter summaries
 3. Concatenate all chapters into a manuscript
 4. `python typeset/build_tex.py` -- generate LaTeX
 5. Run `tectonic typeset/novel.tex` if available (or skip PDF)

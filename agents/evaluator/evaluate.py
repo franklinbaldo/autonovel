@@ -23,7 +23,10 @@ from datetime import datetime
 from pathlib import Path
 
 # --- Configuration ---
-BASE_DIR = Path(__file__).parent
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+from _paths import REPO_ROOT
+BASE_DIR = REPO_ROOT
 
 # Load .env file if present
 from dotenv import load_dotenv

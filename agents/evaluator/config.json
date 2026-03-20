@@ -1,0 +1,13 @@
+{
+  "name": "evaluator",
+  "description": "Scores chapters and planning documents using mechanical slop detection and LLM judge, runs adversarial edits and comparative tournaments",
+  "role": "judge",
+  "scripts": [
+    "evaluate.py",
+    "adversarial_edit.py",
+    "compare_chapters.py"
+  ],
+  "reads": ["voice.md", "world.md", "characters.md", "outline.md", "canon.md", "chapters/ch_*.md"],
+  "writes": ["eval_logs/*.json", "edit_logs/*.json"],
+  "source_repo": "franklinbaldo/autonovel"
+}

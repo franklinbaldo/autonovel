@@ -4,13 +4,20 @@ import subprocess
 import sys
 import re
 import json
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+from _paths import REPO_ROOT
+
+BASE_DIR = REPO_ROOT
 
 def run(cmd, timeout=600):
-    r = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=timeout)
+    r = subprocess.run(cmd, shell=True, capture_output=True, text=True,
+                       timeout=timeout, cwd=str(BASE_DIR))
     return r.stdout + r.stderr, r.returncode
 
 def slop_check(ch):
-    out, _ = run(f'.venv/bin/python3 -c "from evaluate import slop_score, load_file; import json; r=slop_score(load_file(\'chapters/ch_{ch:02d}.md\')); print(json.dumps(r))"')
+    out, _ = run(f'python3 -c "import sys; sys.path.insert(0,\'.\'); from agents.evaluator.evaluate import slop_score, load_file; import json; r=slop_score(load_file(\'chapters/ch_{ch:02d}.md\')); print(json.dumps(r))"')
     return json.loads(out.strip())
 
 def pattern_check(ch):
@@ -23,7 +30,7 @@ def pattern_check(ch):
     return words, didnot, thought
 
 def spot_eval(ch):
-    out, rc = run(f'.venv/bin/python3 evaluate.py --chapter={ch}', timeout=300)
+    out, rc = run(f'python3 agents/evaluator/evaluate.py --chapter={ch}', timeout=300)
     m_overall = re.search(r'overall_score: ([\d.]+)', out)
     m_raw = re.search(r'raw_judge_score: (\d+)', out)
     if m_overall and m_raw:
@@ -42,7 +49,7 @@ for ch in chapters:
     print(f"{'='*50}")
     
     # Draft
-    out, rc = run(f'.venv/bin/python3 draft_chapter.py {ch}')
+    out, rc = run(f'python3 agents/drafter/draft_chapter.py {ch}')
     if rc != 0:
         print(f"  DRAFT FAILED: {out[:200]}")
         results.append((ch, 0, 0, "FAILED"))
@@ -72,14 +79,14 @@ for ch in chapters:
     results.append((ch, words, slop['slop_penalty'], score))
     
     # Git commit
-    run(f"cd /home/jeffq/autonovel && git add chapters/ch_{ch:02d}.md state.json")
+    run(f"git add chapters/ch_{ch:02d}.md state.json")
     
     # Update state.json
-    with open("state.json") as f:
+    with open(BASE_DIR / "state.json") as f:
         state = json.load(f)
     state["current_focus"] = f"ch_{ch:02d}"
     state["chapters_drafted"] = ch
-    with open("state.json", "w") as f:
+    with open(BASE_DIR / "state.json", "w") as f:
         json.dump(state, f, indent=2)
 
 print(f"\n\n{'='*60}")

@@ -9,7 +9,10 @@ import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
-BASE_DIR = Path(__file__).parent
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+from _paths import REPO_ROOT
+BASE_DIR = REPO_ROOT
 load_dotenv(BASE_DIR / ".env")
 
 CHAPTERS_DIR = BASE_DIR / "chapters"
