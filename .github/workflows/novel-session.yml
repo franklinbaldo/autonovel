@@ -1,0 +1,169 @@
+name: Novel — Create Session
+
+on:
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: 'Pipeline phase to run'
+        required: true
+        type: choice
+        options:
+          - foundation
+          - drafting
+          - revision
+          - export
+      chapter:
+        description: 'Chapter number (for drafting/revision)'
+        required: false
+        type: string
+      hint:
+        description: 'Additional guidance for Jules'
+        required: false
+        type: string
+      force_new:
+        description: 'Force new session even if one is active'
+        required: false
+        default: 'false'
+        type: boolean
+      branch:
+        description: 'Novel branch to work on'
+        required: false
+        default: 'main'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  session:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Validate state
+        run: |
+          if [ ! -f state.json ]; then
+            echo '{"phase":"foundation","iteration":0,"foundation_score":0,"lore_score":0,"chapters_drafted":0,"chapters_total":0,"novel_score":0,"revision_cycle":0,"debts":[]}' > state.json
+          fi
+          echo "Current state:"
+          cat state.json
+
+      - name: Check for active session
+        id: check
+        if: inputs.force_new != 'true'
+        env:
+          JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
+        run: |
+          if [ -f sessions/current.json ]; then
+            SESSION_ID=$(jq -r '.session_id' sessions/current.json)
+            STATE=$(curl -s \
+              "https://jules.googleapis.com/v1alpha/sessions/$SESSION_ID" \
+              -H "x-goog-api-key: $JULES_API_KEY" | jq -r '.state // "UNKNOWN"')
+
+            echo "Existing session $SESSION_ID: $STATE"
+
+            if [ "$STATE" = "IN_PROGRESS" ] || [ "$STATE" = "WAITING_FOR_USER_RESPONSE" ]; then
+              # Send continuation with hint
+              HINT="${{ inputs.hint }}"
+              MSG="${HINT:-"Continue the ${{ inputs.phase }} phase. Check state.json."}"
+              curl -s -X POST \
+                "https://jules.googleapis.com/v1alpha/sessions/${SESSION_ID}:sendMessage" \
+                -H "x-goog-api-key: $JULES_API_KEY" \
+                -H "Content-Type: application/json" \
+                -d "$(jq -n --arg p "$MSG" '{prompt: $p}')"
+              echo "active=true" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+          fi
+          echo "active=false" >> $GITHUB_OUTPUT
+
+      - name: Create new session
+        if: steps.check.outputs.active != 'true'
+        env:
+          JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
+        run: |
+          # Build prompt
+          ARGS="--phase ${{ inputs.phase }}"
+          [ -n "${{ inputs.chapter }}" ] && ARGS="$ARGS --chapter ${{ inputs.chapter }}"
+          [ -n "${{ inputs.hint }}" ] && ARGS="$ARGS --hint '${{ inputs.hint }}'"
+
+          python3 scripts/build-novel-prompt.py $ARGS > /tmp/novel-prompt.md
+
+          # Create session via Jules API
+          REPO="${{ github.repository }}"
+          BRANCH="${{ inputs.branch }}"
+          PHASE="${{ inputs.phase }}"
+          CHAPTER="${{ inputs.chapter }}"
+          TITLE="autonovel:${PHASE}"
+          [ -n "$CHAPTER" ] && TITLE="${TITLE}:ch${CHAPTER}"
+
+          RESPONSE=$(jq -n \
+            --rawfile prompt /tmp/novel-prompt.md \
+            --arg title "$TITLE" \
+            --arg source "sources/github/$REPO" \
+            --arg branch "$BRANCH" \
+            '{
+              prompt: $prompt,
+              title: $title,
+              sourceContext: {
+                source: $source,
+                githubRepoContext: { startingBranch: $branch }
+              },
+              automationMode: "AUTO_CREATE_PR"
+            }' | curl -s -X POST \
+              "https://jules.googleapis.com/v1alpha/sessions" \
+              -H "x-goog-api-key: $JULES_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d @-)
+
+          SESSION_ID=$(echo "$RESPONSE" | jq -r '.name // empty' | sed 's|.*/||')
+          STATE=$(echo "$RESPONSE" | jq -r '.state // "UNKNOWN"')
+
+          if [ -z "$SESSION_ID" ]; then
+            echo "::error::Failed to create session"
+            echo "$RESPONSE" | jq .
+            exit 1
+          fi
+
+          echo "Session created: $SESSION_ID ($STATE)"
+
+          # Save session state
+          mkdir -p sessions
+          jq -n \
+            --arg session_id "$SESSION_ID" \
+            --arg phase "$PHASE" \
+            --arg chapter "$CHAPTER" \
+            --arg hint "${{ inputs.hint }}" \
+            --arg branch "$BRANCH" \
+            --arg created_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            '{
+              session_id: $session_id,
+              phase: $phase,
+              chapter: ($chapter | if . == "" then null else . end),
+              hint: ($hint | if . == "" then null else . end),
+              branch: $branch,
+              created_at: $created_at
+            }' > sessions/current.json
+
+      - name: Commit session state
+        run: |
+          git config user.name "autonovel-bot"
+          git config user.email "autonovel-bot@users.noreply.github.com"
+          git add sessions/ state.json 2>/dev/null || true
+          git diff --staged --quiet || \
+            git commit -m "session: ${{ inputs.phase }} $(date -u +%H:%M)"
+
+          for i in 1 2 3 4; do
+            git push && break
+            sleep $((2**i))
+          done

@@ -1,0 +1,19 @@
+{
+  "name": "foundation",
+  "description": "Builds the five co-evolving layers: world bible, character registry, chapter outline, foreshadowing ledger, and canon database",
+  "role": "worldbuilder",
+  "scripts": [
+    "seed.py",
+    "gen_world.py",
+    "gen_characters.py",
+    "gen_outline.py",
+    "gen_outline_part2.py",
+    "gen_canon.py",
+    "voice_fingerprint.py"
+  ],
+  "reads": ["seed.txt", "voice.md", "CRAFT.md", "MYSTERY.md"],
+  "writes": ["world.md", "characters.md", "outline.md", "canon.md", "voice.md"],
+  "source_repo": "franklinbaldo/autonovel",
+  "session_reuse": true,
+  "max_active_sessions": 1
+}

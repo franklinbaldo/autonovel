@@ -252,26 +252,26 @@ def run_foundation(state: dict) -> dict:
 
         # 1. Generate planning documents
         step("Generating world bible...")
-        uv_run("gen_world.py", timeout=300)
+        uv_run("agents/foundation/gen_world.py", timeout=300)
 
         step("Generating characters...")
-        uv_run("gen_characters.py", timeout=300)
+        uv_run("agents/foundation/gen_characters.py", timeout=300)
 
         step("Generating outline (part 1)...")
-        uv_run("gen_outline.py", timeout=300)
+        uv_run("agents/foundation/gen_outline.py", timeout=300)
 
         step("Generating outline (part 2 — foreshadowing)...")
-        uv_run("gen_outline_part2.py", timeout=300)
+        uv_run("agents/foundation/gen_outline_part2.py", timeout=300)
 
         step("Generating canon...")
-        uv_run("gen_canon.py", timeout=300)
+        uv_run("agents/foundation/gen_canon.py", timeout=300)
 
         step("Running voice fingerprint...")
-        uv_run("voice_fingerprint.py", timeout=300)
+        uv_run("agents/foundation/voice_fingerprint.py", timeout=300)
 
         # 2. Evaluate
         step("Evaluating foundation...")
-        eval_result = uv_run("evaluate.py --phase=foundation", timeout=300)
+        eval_result = uv_run("agents/evaluator/evaluate.py --phase=foundation", timeout=300)
         score = parse_score(eval_result.stdout, "overall_score")
         lore = parse_lore_score(eval_result.stdout)
 
@@ -335,7 +335,7 @@ def run_drafting(state: dict) -> dict:
             step(f"Attempt {attempt}/{MAX_CHAPTER_ATTEMPTS}")
 
             # Draft
-            draft_result = uv_run(f"draft_chapter.py {ch}", timeout=600)
+            draft_result = uv_run(f"agents/drafter/draft_chapter.py {ch}", timeout=600)
             if draft_result.returncode != 0:
                 step(f"Draft failed (exit {draft_result.returncode}), retrying...")
                 continue
@@ -483,20 +483,20 @@ def run_revision(state: dict, max_cycles: int = MAX_REVISION_CYCLES) -> dict:
 
         # -- Step 1: Adversarial editing pass --
         step("Running adversarial editing on all chapters...")
-        uv_run("adversarial_edit.py all", timeout=900)
+        uv_run("agents/evaluator/adversarial_edit.py all", timeout=900)
 
         # -- Step 2: Apply mechanical cuts (only if apply_cuts.py exists) --
-        apply_cuts = BASE_DIR / "apply_cuts.py"
+        apply_cuts = BASE_DIR / "agents/reviser/apply_cuts.py"
         if apply_cuts.exists():
             step("Applying mechanical cuts (OVER-EXPLAIN, REDUNDANT)...")
-            run_tool("uv run python apply_cuts.py all "
+            run_tool("uv run python agents/reviser/apply_cuts.py all "
                      "--types OVER-EXPLAIN REDUNDANT --min-fat 15", timeout=300)
         else:
             step("apply_cuts.py not found, skipping mechanical cuts")
 
         # -- Step 3: Reader panel --
         step("Running reader panel evaluation...")
-        uv_run("reader_panel.py", timeout=600)
+        uv_run("agents/reviewer/reader_panel.py", timeout=600)
 
         # -- Step 4: Parse panel consensus --
         panel_path = EDIT_LOGS_DIR / "reader_panel.json"
@@ -522,10 +522,10 @@ def run_revision(state: dict, max_cycles: int = MAX_REVISION_CYCLES) -> dict:
 
             # Generate revision brief
             brief_file = BRIEFS_DIR / f"ch{ch_num:02d}_cycle{cycle}_{question}.md"
-            gen_brief = BASE_DIR / "gen_brief.py"
+            gen_brief = BASE_DIR / "agents/reviser/gen_brief.py"
             if gen_brief.exists():
                 step(f"Generating brief for Ch {ch_num}...")
-                run_tool(f"uv run python gen_brief.py --panel {ch_num}", timeout=300)
+                run_tool(f"uv run python agents/reviser/gen_brief.py --panel {ch_num}", timeout=300)
                 # gen_brief.py may write to briefs/ — find the most recent brief
                 brief_candidates = sorted(
                     BRIEFS_DIR.glob(f"ch{ch_num:02d}*.md"),
@@ -550,7 +550,7 @@ def run_revision(state: dict, max_cycles: int = MAX_REVISION_CYCLES) -> dict:
 
             # Run revision
             step(f"Revising Ch {ch_num} with brief {brief_file.name}...")
-            uv_run(f"gen_revision.py {ch_num} {brief_file}", timeout=600)
+            uv_run(f"agents/reviser/gen_revision.py {ch_num} {brief_file}", timeout=600)
 
             # Evaluate revised chapter
             post_eval = uv_run(f"evaluate.py --chapter={ch_num}", timeout=300)
@@ -577,7 +577,7 @@ def run_revision(state: dict, max_cycles: int = MAX_REVISION_CYCLES) -> dict:
 
         # -- Step 6: Full novel evaluation --
         step("Running full novel evaluation...")
-        full_eval = uv_run("evaluate.py --full", timeout=600)
+        full_eval = uv_run("agents/evaluator/evaluate.py --full", timeout=600)
         novel_score = parse_score(full_eval.stdout, "novel_score")
 
         if novel_score < 0:
@@ -609,7 +609,7 @@ def run_revision(state: dict, max_cycles: int = MAX_REVISION_CYCLES) -> dict:
     # =========================================================
     # PHASE 3b: OPUS REVIEW LOOP (deep, prose-level refinement)
     # =========================================================
-    review_py = BASE_DIR / "review.py"
+    review_py = BASE_DIR / "agents/reviewer/review.py"
     if review_py.exists():
         banner("PHASE 3b: OPUS REVIEW LOOP", "=")
         
@@ -620,12 +620,12 @@ def run_revision(state: dict, max_cycles: int = MAX_REVISION_CYCLES) -> dict:
             # Step 1: Generate the review
             step("Sending manuscript to Opus for review...")
             review_result = uv_run(
-                f"review.py --output reviews.md", timeout=900)
+                f"agents/reviewer/review.py --output reviews.md", timeout=900)
             
             # Step 2: Parse the review
             step("Parsing review...")
             parse_result = run_tool(
-                "uv run python review.py --parse", timeout=60)
+                "uv run python agents/reviewer/review.py --parse", timeout=60)
             print(parse_result.stdout if parse_result else "")
             
             # Step 3: Check stopping condition
@@ -652,10 +652,10 @@ def run_revision(state: dict, max_cycles: int = MAX_REVISION_CYCLES) -> dict:
             
             # Step 4: Generate briefs from review items and fix
             step("Generating revision briefs from review...")
-            gen_brief_py = BASE_DIR / "gen_brief.py"
+            gen_brief_py = BASE_DIR / "agents/reviser/gen_brief.py"
             if gen_brief_py.exists():
                 # Auto mode: picks weakest chapter, cross-references all sources
-                run_tool("uv run python gen_brief.py --auto", timeout=300)
+                run_tool("uv run python agents/reviser/gen_brief.py --auto", timeout=300)
                 
                 # Find any generated briefs and apply the top one
                 recent_briefs = sorted(
@@ -668,17 +668,17 @@ def run_revision(state: dict, max_cycles: int = MAX_REVISION_CYCLES) -> dict:
                     if ch_match:
                         ch_num = int(ch_match.group(1))
                         step(f"Revising Ch {ch_num} from review brief...")
-                        uv_run(f"gen_revision.py {ch_num} {brief}", timeout=600)
+                        uv_run(f"agents/reviser/gen_revision.py {ch_num} {brief}", timeout=600)
                         git_add_commit(
                             f"review round {rnd}: revise ch{ch_num:02d} from Opus feedback")
             
             # Step 5: Mechanical fixes from review
             # Run slop pass on any mentioned patterns
             step("Running mechanical cleanup pass...")
-            apply_cuts_py = BASE_DIR / "apply_cuts.py"
+            apply_cuts_py = BASE_DIR / "agents/reviser/apply_cuts.py"
             if apply_cuts_py.exists():
                 run_tool(
-                    "uv run python apply_cuts.py all --types OVER-EXPLAIN REDUNDANT --min-fat 15",
+                    "uv run python agents/reviser/apply_cuts.py all --types OVER-EXPLAIN REDUNDANT --min-fat 15",
                     timeout=300)
                 git_add_commit(f"review round {rnd}: mechanical cleanup")
             
@@ -706,16 +706,16 @@ def run_export(state: dict) -> dict:
     banner("PHASE 4: EXPORT", "=")
 
     # 1. Rebuild outline from chapters
-    build_outline = BASE_DIR / "build_outline.py"
+    build_outline = BASE_DIR / "agents/exporter/build_outline.py"
     if build_outline.exists():
         step("Rebuilding outline from chapters...")
-        uv_run("build_outline.py", timeout=300)
+        uv_run("agents/exporter/build_outline.py", timeout=300)
 
     # 2. Build arc summary
-    build_arc = BASE_DIR / "build_arc_summary.py"
+    build_arc = BASE_DIR / "agents/exporter/build_arc_summary.py"
     if build_arc.exists():
         step("Building arc summary...")
-        uv_run("build_arc_summary.py", timeout=300)
+        uv_run("agents/exporter/build_arc_summary.py", timeout=300)
 
     # 3. Concatenate chapters into manuscript.md
     step("Building manuscript.md...")

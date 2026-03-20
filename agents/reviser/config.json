@@ -1,0 +1,15 @@
+{
+  "name": "reviser",
+  "description": "Rewrites chapters from revision briefs, applies mechanical cuts, generates briefs from panel feedback",
+  "role": "reviser",
+  "scripts": [
+    "gen_revision.py",
+    "gen_brief.py",
+    "apply_cuts.py"
+  ],
+  "reads": ["voice.md", "world.md", "characters.md", "chapters/ch_*.md", "edit_logs/*"],
+  "writes": ["chapters/ch_*.md", "briefs/*"],
+  "source_repo": "franklinbaldo/autonovel",
+  "session_reuse": true,
+  "max_active_sessions": 1
+}

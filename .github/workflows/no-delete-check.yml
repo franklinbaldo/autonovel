@@ -1,0 +1,70 @@
+name: no-delete-check
+
+# Prevent bare file deletions. Files must be moved to .trash/ or archive/
+# directories, never deleted outright. Preserves history and enables recovery.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check-deletions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for bare deletions
+        run: |
+          BASE=${{ github.event.pull_request.base.sha }}
+          HEAD=${{ github.event.pull_request.head.sha }}
+
+          # Get deleted files (D = deleted)
+          DELETED=$(git diff --name-only --diff-filter=D "$BASE" "$HEAD" || true)
+
+          if [ -z "$DELETED" ]; then
+            echo "OK: no files deleted."
+            exit 0
+          fi
+
+          # Get added files (to check for moves)
+          ADDED=$(git diff --name-only --diff-filter=A "$BASE" "$HEAD" || true)
+
+          VIOLATIONS=""
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+
+            # Allow deletion if the file was moved to .trash/ or archive/
+            basename=$(basename "$file")
+            moved=false
+
+            if echo "$ADDED" | grep -q "\.trash/$basename"; then
+              moved=true
+            fi
+            if echo "$ADDED" | grep -q "archive/$basename"; then
+              moved=true
+            fi
+
+            # Allow deletion of temporary/generated files
+            case "$file" in
+              __pycache__/*|*.pyc|.env|*.pdf) moved=true ;;
+              agents/*/active-sessions/current.json) moved=true ;;
+              sessions/*) moved=true ;;
+            esac
+
+            if [ "$moved" = false ]; then
+              VIOLATIONS="$VIOLATIONS\n  - $file"
+            fi
+          done <<< "$DELETED"
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "::error::NO-DELETE VIOLATION: these files were deleted without being archived:"
+            echo -e "$VIOLATIONS"
+            echo ""
+            echo "Files must be moved to .trash/ or an archive/ directory, not deleted."
+            echo "Use: git mv <file> .trash/<file>"
+            exit 1
+          fi
+
+          echo "OK: all deletions have corresponding archive moves."

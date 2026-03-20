@@ -11,6 +11,51 @@ The goal: a user provides a seed concept. Everything else is automated.
 
 ---
 
+## Cognitive Motor: Jules Sequence
+
+Autonovel supports two cognitive engines, selectable via `AUTONOVEL_ENGINE`:
+
+### Jules Sequence (`AUTONOVEL_ENGINE=jules`)
+
+Uses Google Jules (via the Verne interface) as the cognitive motor.
+Every creative or evaluative task flows through the **Jules Sequence**:
+
+```
+1. CREATE SESSION  →  Jules receives the task prompt
+2. PLAN GENERATED  →  Jules proposes an execution plan
+3. AUTO-APPROVE    →  Pipeline approves the plan automatically
+4. POLL ACTIVITIES →  Monitor session until completion
+5. EXTRACT RESULT  →  Collect generated text from agent messages
+```
+
+This treats Jules as an autonomous agent that reasons about, plans,
+and executes each writing task as a complete session. The session
+lifecycle IS the cognitive loop.
+
+Architecture:
+```
+jules_client.py   →  Jules API wrapper (session lifecycle)
+engine.py         →  Engine abstraction (routes to Jules or Anthropic)
+*.py scripts      →  Import from engine.py (zero API knowledge)
+```
+
+Configuration (`.env`):
+```
+AUTONOVEL_ENGINE=jules
+JULES_API_KEY=your-key
+JULES_API_BASE_URL=https://jules.googleapis.com/v1alpha
+JULES_SOURCE_REPO=your-org/autonovel
+JULES_POLL_INTERVAL=3
+JULES_MAX_WAIT=900
+```
+
+### Anthropic Direct (`AUTONOVEL_ENGINE=anthropic`)
+
+Uses Claude API directly via httpx. The original engine.
+Configuration uses `ANTHROPIC_API_KEY` and model env vars.
+
+---
+
 ## Master Branch (Framework)
 
 Master contains no story-specific content. It is the reusable base.
@@ -33,6 +78,10 @@ TEMPLATES (empty shells, filled per-novel on branch):
   canon.md             -- empty with instructions
   MYSTERY.md           -- blank template
   state.json           -- {phase: "foundation", iteration: 0, debts: []}
+
+ENGINE (cognitive motor layer):
+  engine.py              -- engine abstraction (jules or anthropic)
+  jules_client.py        -- Jules Sequence API client
 
 TOOLS (the pipeline machinery):
   Foundation:
@@ -65,16 +114,74 @@ TOOLS (the pipeline machinery):
     typeset/build_tex.py -- chapters/*.md → chapters_content.tex
 
   Orchestrator:
-    run_pipeline.py      -- NEW: fully automated pipeline runner
+    run_pipeline.py      -- fully automated pipeline runner (local)
+
+GITHUB ACTIONS (CI/CD via Jules Sequence):
+  .github/workflows/
+    novel-heartbeat.yml  -- periodic pipeline progression (every 15 min)
+    novel-session.yml    -- create Jules sessions per phase (manual)
+    novel-status.yml     -- monitor and cleanup finished sessions
+
+  scripts/
+    heartbeat.py         -- session lifecycle orchestrator
+    build-novel-prompt.py -- construct phase-specific prompts
+    next-task.py         -- determine next task from state.json
+
+  sessions/
+    current.json         -- active session metadata
+    history/*.json       -- archived session records
+    heartbeats/*.json    -- heartbeat log entries
 
 CONFIG:
-  .env.example           -- API key template
+  .env.example           -- API key template (Jules + Anthropic)
   pyproject.toml         -- Python dependencies (httpx, dotenv)
   .python-version
   .gitignore
 ```
 
 ---
+
+## GitHub Actions Pipeline
+
+When `AUTONOVEL_ENGINE=jules`, the pipeline runs autonomously via GitHub Actions:
+
+```
+┌─────────────────────────────────────────────────────┐
+│              novel-heartbeat.yml (*/15 min)          │
+│                                                     │
+│  1. Check state.json for current phase              │
+│  2. Check sessions/current.json for active session  │
+│  3. Query Jules API for session state               │
+│  4. If session active → send continuation           │
+│  5. If session done → archive, determine next task  │
+│  6. If no session → create new session for next     │
+│  7. Commit session state + heartbeat log            │
+└─────────────────────────────────────────────────────┘
+
+Jules sessions use AUTO_CREATE_PR mode:
+  - Jules works on the repo directly
+  - Creates PRs with changes (world.md, chapters, etc.)
+  - Pipeline merges PRs and advances state
+
+Session lifecycle (the Jules Sequence):
+  CREATE → AWAITING_PLAN → IN_PROGRESS → COMPLETED
+```
+
+### Required Secrets
+- `JULES_API_KEY` -- Google Cloud API key with Jules access
+- `GH_PAT` -- GitHub PAT for workflow dispatch and PR operations
+
+### Manual Operation
+```bash
+# Start a specific phase manually
+gh workflow run novel-session.yml -f phase=foundation -f branch=my-novel
+
+# Check status
+gh workflow run novel-heartbeat.yml -f mode=status
+
+# Force new session
+gh workflow run novel-heartbeat.yml -f mode=force-new
+```
 
 ## Per-Novel Branch (Generated)
 
@@ -109,7 +216,10 @@ INPUT:  seed.txt (user-provided or generated via seed.py)
 OUTPUT: branch created, .env configured
 
 1. git checkout -b autonovel/<tag>
-2. Verify .env has ANTHROPIC_API_KEY
+2. Configure .env:
+   - Set AUTONOVEL_ENGINE (jules or anthropic)
+   - If jules: set JULES_API_KEY + JULES_SOURCE_REPO
+   - If anthropic: set ANTHROPIC_API_KEY + model vars
 3. Verify seed.txt exists and is specific enough
    (world-differentiator, central tension, cost/constraint, sensory hook)
 ```
