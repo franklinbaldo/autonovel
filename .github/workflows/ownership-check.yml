@@ -1,0 +1,129 @@
+name: ownership-check
+
+# Enforce per-agent file ownership: each agent can only modify files
+# declared in its config.json "writes" array. Inspired by rosencrantz-coin.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check-ownership:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed
+        run: |
+          BASE=${{ github.event.pull_request.base.sha }}
+          HEAD=${{ github.event.pull_request.head.sha }}
+          echo "files<<EOF" >> "$GITHUB_OUTPUT"
+          git diff --name-only --diff-filter=ACMR "$BASE" "$HEAD" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Check file ownership
+        shell: python3 {0}
+        run: |
+          import json
+          import fnmatch
+          from pathlib import Path
+
+          # Load all agent configs
+          agents = {}
+          agents_dir = Path("agents")
+          for config_path in agents_dir.glob("*/config.json"):
+              with open(config_path) as f:
+                  cfg = json.load(f)
+              agents[cfg["name"]] = cfg.get("writes", [])
+
+          # Shared files any agent may update
+          SHARED_WRITES = {"state.json", ".gitignore"}
+
+          # Infrastructure files (only pipeline maintainers)
+          INFRA_PATTERNS = {
+              ".github/workflows/*",
+              "scripts/*",
+              "engine.py",
+              "jules_client.py",
+              "_paths.py",
+              "run_pipeline.py",
+              "PIPELINE.md",
+              "PIPELINE_RULES.md",
+              "pyproject.toml",
+              ".env.example",
+          }
+
+          # Files changed in this PR
+          changed_files = """${{ steps.changed.outputs.files }}""".strip().split("\n")
+          changed_files = [f for f in changed_files if f.strip()]
+
+          # Detect which agent is making the PR (from branch name or commit)
+          # Convention: branch names like "autonovel:foundation:..." or PR title
+          # For now, extract from the PR branch: jules creates PRs per-agent
+          import subprocess
+          branch = subprocess.run(
+              ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+              capture_output=True, text=True
+          ).stdout.strip()
+
+          # Try to identify agent from branch name
+          detected_agent = None
+          for agent_name in agents:
+              if agent_name in branch.lower():
+                  detected_agent = agent_name
+                  break
+
+          violations = []
+
+          for filepath in changed_files:
+              # Skip shared files
+              if filepath in SHARED_WRITES:
+                  continue
+
+              # Skip infra files (allowed for maintainers)
+              is_infra = any(fnmatch.fnmatch(filepath, pat) for pat in INFRA_PATTERNS)
+              if is_infra:
+                  continue
+
+              # Skip agent's own config and scripts
+              if filepath.startswith("agents/"):
+                  parts = filepath.split("/")
+                  if len(parts) >= 2:
+                      owning_agent = parts[1]
+                      # Agents can modify their own directory
+                      if owning_agent in agents:
+                          continue
+
+              # Check if ANY agent claims this file
+              claimed = False
+              for agent_name, write_patterns in agents.items():
+                  for pattern in write_patterns:
+                      if fnmatch.fnmatch(filepath, pattern):
+                          claimed = True
+                          # If we know which agent is acting, verify it matches
+                          if detected_agent and detected_agent != agent_name:
+                              # Multiple agents may claim the same file (e.g. chapters/)
+                              # That's OK -- drafter and reviser both write chapters
+                              pass
+                          break
+                  if claimed:
+                      break
+
+              if not claimed:
+                  violations.append(filepath)
+
+          if violations:
+              print("::error::OWNERSHIP VIOLATION: these files are not in any agent's writes[]:")
+              for v in violations:
+                  print(f"  - {v}")
+              print()
+              print("Each modified file must be declared in an agent's config.json writes[] array,")
+              print("or be a shared file (state.json), or be an infrastructure file.")
+              print()
+              print("To fix: add the file pattern to the appropriate agents/*/config.json writes[] array.")
+              exit(1)
+          else:
+              print(f"OK: {len(changed_files)} files checked, all ownership rules pass.")

@@ -8,6 +8,8 @@
     "compare_chapters.py"
   ],
   "reads": ["voice.md", "world.md", "characters.md", "outline.md", "canon.md", "chapters/ch_*.md"],
-  "writes": ["eval_logs/*.json", "edit_logs/*.json"],
-  "source_repo": "franklinbaldo/autonovel"
+  "writes": ["eval_logs/*", "edit_logs/*_cuts.json", "edit_logs/*_adversarial.json"],
+  "source_repo": "franklinbaldo/autonovel",
+  "session_reuse": false,
+  "max_active_sessions": 2
 }

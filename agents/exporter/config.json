@@ -7,6 +7,8 @@
     "build_arc_summary.py"
   ],
   "reads": ["chapters/ch_*.md", "outline.md"],
-  "writes": ["outline.md", "arc_summary.md"],
-  "source_repo": "franklinbaldo/autonovel"
+  "writes": ["outline.md", "arc_summary.md", "manuscript.md"],
+  "source_repo": "franklinbaldo/autonovel",
+  "session_reuse": false,
+  "max_active_sessions": 1
 }

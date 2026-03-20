@@ -6,7 +6,9 @@
     "draft_chapter.py",
     "run_drafts.py"
   ],
-  "reads": ["voice.md", "world.md", "characters.md", "outline.md", "canon.md"],
+  "reads": ["voice.md", "world.md", "characters.md", "outline.md", "canon.md", "chapters/ch_*.md"],
   "writes": ["chapters/ch_*.md"],
-  "source_repo": "franklinbaldo/autonovel"
+  "source_repo": "franklinbaldo/autonovel",
+  "session_reuse": true,
+  "max_active_sessions": 1
 }

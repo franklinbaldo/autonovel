@@ -8,5 +8,7 @@
   ],
   "reads": ["voice.md", "world.md", "characters.md", "chapters/ch_*.md", "arc_summary.md"],
   "writes": ["edit_logs/reader_panel.json", "edit_logs/*_review.json", "reviews.md"],
-  "source_repo": "franklinbaldo/autonovel"
+  "source_repo": "franklinbaldo/autonovel",
+  "session_reuse": false,
+  "max_active_sessions": 1
 }
