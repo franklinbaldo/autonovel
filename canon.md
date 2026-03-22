@@ -1,68 +1,30 @@
-# Canon
+# Canon Database
 
-Hard facts about the world. Every entry here is a constraint the
-evaluator checks against. If the prose contradicts canon, it's a bug.
+## Hard Facts
+1.  **Setting Location:** Ostrum, a vertical city built entirely within the skeleton of an ancient, colossal sea creature called the Pale God.
+2.  **Magic System:** Osteomancy (Bone-singing). Requires overlapping vocal notes ("splitting the chord") to reshape bone.
+3.  **Cost of Osteomancy (Physical):** Drains calcium from the user's own skeleton, making them "Brittle." Overuse results in "The Shattering" (bones turning to glass).
+4.  **Cost of Osteomancy (Mental):** Extracting memories from the leviathan's marrow permanently erases a random, equivalent memory from the user's mind.
+5.  **Marrow-Rot:** A fatal disease caused by burning cheap, toxic "slag-marrow." Symptoms include blackened gums and deteriorating joints. It is curable only with pure, highly refined marrow-oil.
+6.  **The Factions:** House Vane (ruling oligarchy), The Hollow Syndicate (criminal organization), The Marrow-Masons (miners' union), The Cult of the Waking God (heretical sect).
+7.  **The Protagonist:** Kaelen, a skilled marrow-thief. He is desperately trying to cure his sister, Elara, of Marrow-Rot.
+8.  **The Antagonist:** Lord Vane, a physically frail but magically and politically powerful aristocrat. He controls the deep marrow mines.
+9.  **The Archivist:** Leader of the Hollow Syndicate. She speaks in multiple voices because she has consumed so many stolen memories.
+10. **The Leviathan's State:** It is not dead; it is in a deep hibernation. The continuous mining of its marrow is causing it to wake up, which manifests as "earthquakes" in the city.
+11. **Geography (Verticality):** The Rib Slums (lowest tier, toxic air), The Marrow Mines (Deep Core, extreme heat), The Spine (Ivory Ward, upper elite tier).
+12. **The "Hollows":** People who have sold or lost all their memories. They enter a state of catatonic bliss, losing all sense of self.
+13. **Flora/Fauna:** Corpse-Orchids (used to treat Marrow-Rot), Marrow-Hounds (blind scavengers), Razor-Kelp (grows on the Ashen Coast outside the city).
 
-This file grows during foundation and drafting. When a fact is
-established (in world.md, characters.md, or in a chapter), it gets
-logged here as canonical. The evaluator cross-references canon
-against every chapter.
+## Character Details
+*   **Kaelen:** Male. Early twenties. Dark hair, pale skin from lack of sunlight. His most distinct physical trait is the creeping network of fine, white lines on his skin over bones he has overused in Osteomancy.
+*   **Elara:** Female. Mid-teens. Kaelen's younger sister. Her fingers are slightly swollen and her gums are beginning to darken from Marrow-Rot.
+*   **Lord Vane:** Male. Mid-fifties. Extremely thin, uses a hover-palanquin lined with feathers because his bones are naturally Brittle. Wears heavily embroidered silk.
+*   **The Archivist:** Female. Age ambiguous. Wears a veil of tiny, chiming bone-fragments over her face. Her voice constantly shifts pitch and cadence.
+*   **Lyra:** Female. Late teens. A rogue Osteomancer from the Cult of the Waking God. Uses discordant singing.
+*   **Jax:** Male. Kaelen's fence. Missing two fingers on his left hand (a debt paid to the Syndicate).
 
-## How to use
-
-Each entry: a short, falsifiable statement with the source.
-Group by category. Keep it flat and scannable -- this isn't prose,
-it's a database.
-
----
-
-## Geography
-<!-- Example:
-- Vael is 12 days' ride north of Tasren. (world.md)
-- The Ashenmoor lies between Vael and the Sundering Peaks. (world.md)
-- The River Kell flows south through Tasren to the sea. (ch_02)
--->
-
-## Timeline
-<!-- Example:
-- The Sundering happened 300 years before the story begins. (world.md)
-- Kael is 23 at story start. (characters.md)
-- The siege of Vael happened when Kael was 7. (ch_04)
-- Ch 1-3 span approximately 2 weeks. (outline.md)
--->
-
-## Magic System Rules
-<!-- Example:
-- All magic costs blood or memory. No exceptions. (world.md, HARD RULE)
-- A shaper cannot affect living flesh, only dead matter. (world.md)
-- Using the old tongue draws the attention of the Hollow. (ch_03)
--->
-
-## Character Facts
-<!-- Example:
-- Kael is left-handed. (ch_01)
-- Vessa has a scar across her left palm. (ch_01)
-- Moren cannot read. He hides this. (characters.md)
-- Kael's mother died in the siege of Vael. (characters.md)
--->
-
-## Political / Factional
-<!-- Example:
-- The Accord of Tasren was signed by three of the five houses. (world.md)
-- House Drennan controls the salt trade. (world.md)
-- The Temple does not recognize secular law within its walls. (ch_05)
--->
-
-## Cultural
-<!-- Example:
-- In Tasren, the dead are burned, never buried. (world.md)
-- Naming a child before its first moon is considered bad luck. (ch_06)
-- The color white is associated with mourning, not black. (world.md)
--->
-
-## Established In-Story (things that happened in chapters)
-<!-- Example:
-- Kael killed the messenger in ch_03. This cannot be undone.
-- Vessa revealed her tattoo to Moren in ch_07. He now knows.
-- The bridge at Ashenmoor was destroyed in ch_09. It's gone.
--->
+## Consistency Checks
+*   **Constraint 1:** No one can create bone from nothing. All Osteomancy is a transfer of mass.
+*   **Constraint 2:** Memories extracted from the marrow are stored in delicate, physical spheres of hardened marrow-sap. If a sphere is broken, the memory is lost forever to the world.
+*   **Constraint 3:** The higher you go in Ostrum, the cleaner the air. The lower you go, the hotter and more toxic it becomes.
+*   **Constraint 4:** The "earthquakes" always originate from the deepest parts of the skull and spine, never from the outer ribs.
