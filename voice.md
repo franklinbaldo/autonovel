@@ -120,38 +120,28 @@ The agent proposes a voice that serves THIS story, writes exemplar
 passages, and calibrates against them throughout drafting.
 
 ### Tone
-<!-- Generated during foundation. Examples:
-     "Mythic and weighty, like stone tablets being read aloud."
-     "Warm, slightly breathless, like a traveler telling stories by firelight."
-     "Spare and cold. Sentences like knife cuts." -->
+Gritty, pragmatic, and sensory. The narrator treats memory as a physical, wet commodity. Sentences are stripped of romanticism. The world is seen through the lens of a weary survivalist dealing with desperate addicts.
 
 ### Sentence Rhythm
-<!-- Generated during foundation. Not rules -- tendencies.
-     "Long sentences for worldbuilding, short for violence."
-     "Dialogue is clipped. Narration flows." -->
+Terse and rhythmic, mimicking the fractured nature of extracted memories. Short, blunt sentences for action and observation. Longer, flowing sentences reserved only for describing the euphoric rush or disorienting fog of consuming a memory.
 
 ### Vocabulary Register
-<!-- Generated during foundation. The word-hoard for this world.
-     What does this world SOUND like? Anglo-Saxon blunt? Latinate
-     baroque? Colloquial modern? A mix? -->
+Clinical and visceral. Words associated with surgery, butchery, and finance. "Siphon," "vial," "cortex," "spill," "hollow," "leech," "ledger," "dregs." Avoiding flowery adjectives in favor of strong nouns and active verbs.
 
 ### POV and Tense
-<!-- Generated during foundation.
-     Third limited? First? Rotating? Omniscient?
-     Past tense? Present? Does it shift for effect? -->
+Third-person limited, past tense. Close psychic distance to the protagonist, emphasizing their physical sensations—headaches, cold sweats, the smell of copper and ozone that accompanies an extraction.
 
 ### Dialogue Conventions
-<!-- Generated during foundation.
-     Tags: "said" only? Action beats? No tags at all?
-     How do characters sound different from each other?
-     Subtext rules: do characters say what they mean? -->
+Minimal tags. Dialogue is transactional and often broken. Characters rarely say exactly what they mean, instead negotiating around the edges of their wants. The memory-rich speak in complete, languid sentences; the hollowed-out speak in repetitive fragments, grasping for words they've sold.
 
 ### Exemplar Passages
-<!-- 3-5 paragraphs that ARE the voice. Written during foundation.
-     The agent calibrates every chapter against these.
-     These are the tuning fork. -->
+The needle slid into the base of the skull with the sound of a boot crushing frost. Kael held the glass vial steady. The memory—a summer afternoon eating bruised peaches—bled down the glass tube, glowing a faint, sickening amber. The client went slack in the chair. His eyes lost their focus. When he woke, he wouldn't remember the taste of the fruit, or the girl who handed it to him. He'd just have the coin Kael left on the table.
+
+In the lower wards, the hollows begged for scraps. They didn't want coin anymore. They traded their boots, their coats, for a drop of someone else's nostalgia. Kael walked past them, keeping his hand tight on his satchel. The vials clinked against each other. A fortune in stolen grief and bought joy, heavy against his hip.
 
 ### Anti-Exemplars
-<!-- 3-5 paragraphs showing what this voice is NOT.
-     Not the generic anti-slop stuff above -- specific to this novel.
-     "This is too flowery for our tone." "This is too modern." -->
+*Too flowery and abstract:*
+Kael felt a profound sense of sadness as he utilized the mystical needle to extract the myriad memories from the man's mind. It was a multifaceted tapestry of emotions, a true testament to the human condition.
+
+*Too modern and casual:*
+Okay, so basically, taking out memories sucked. Kael hated his job, but hey, it paid the bills. He grabbed the needle and stuck it in the guy's neck, watching the shiny stuff pour out into the bottle.

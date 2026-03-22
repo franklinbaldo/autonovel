@@ -1,68 +1,69 @@
-# Canon
+# Canon Database: The Mnemic Wastes
 
-Hard facts about the world. Every entry here is a constraint the
-evaluator checks against. If the prose contradicts canon, it's a bug.
+This document is the single source of truth for hard facts in the novel.
+Any contradiction with this file is a bug.
 
-This file grows during foundation and drafting. When a fact is
-established (in world.md, characters.md, or in a chapter), it gets
-logged here as canonical. The evaluator cross-references canon
-against every chapter.
+## Timeline & History
+- **Year 0:** The Sundering. Magical leylines shatter; magic embeds in human cognition (memories).
+- **Year 12:** Discovery of the Siphon by surgeon Elias Thorne.
+- **Year 45:** Oakhaven establishes the Mnemic Standard (memories replace precious metals as currency).
+- **Year 98:** The Hollow Riots. The Lower Wards burn; Cortex Guard is formed.
+- **Year 142 (Present Day):** The Dregs Crisis begins. "The Fade" starts spreading.
+- **12 Years Ago (Year 130):** Kael's mother sold her memory of his face and died in the Rust Barrens. Kael was 12.
 
-## How to use
+## The Magic System: Tonal Law & Siphoning
+- **The Siphon:** A device consisting of a needle and pump, used to extract cerebrospinal fluid treated with silver and belladonna.
+- **Extraction Point:** The base of the skull.
+- **The Fluid:** Tangible, obeys gravity, evaporates if unsealed.
+- **Color Coding:**
+    - Amber/Gold = High quality, pure joy/innocence.
+    - Grey/Cloudy = "Dregs," degraded or traumatic memories.
+    - Black = Weaponized trauma (highly illegal/unstable).
+- **The Law of Conservation:** Memories cannot be duplicated. Once extracted, the donor loses it permanently.
+- **Donor Cost:** Physical agony during extraction. Risk of infection. Leaves a "blank spot" (cold sensation/missing time). Repeated extraction causes "Hollowing" (loss of personality/motor skills).
+- **Buyer Cost:** Ingestion of the fluid. Too many foreign memories cause "The Fade" (inability to distinguish own memories from purchased ones, leading to psychosis).
+- **Consent Rule:** The donor must be perfectly still (willing, drugged, or restrained) for a safe extraction.
+- **Writing Taboo:** Keeping written journals is illegal outside the Cortex Elite, as it complicates the forgetting process during extraction.
 
-Each entry: a short, falsifiable statement with the source.
-Group by category. Keep it flat and scannable -- this isn't prose,
-it's a database.
+## Geography: Oakhaven
+- **Structure:** Built into a massive, dried-up crater. Brutalist stone and rusted iron architecture.
+- **The Upper Wards (The Crown):** Crater rim. Sunlit, white stone, hanging gardens, smells of spices and clean linen.
+- **The Lower Wards (The Basin):** Crater bottom. Shadowed, corrugated tin/rotting wood, grey fog from refineries, smells of sewage, rust, and memory fluid ozone.
+- **The Rust Barrens:** The wasteland outside the crater. Jagged metal spikes, red earth, toxic dust storms. Exiled Hollows are sent here.
 
----
+## Characters
 
-## Geography
-<!-- Example:
-- Vael is 12 days' ride north of Tasren. (world.md)
-- The Ashenmoor lies between Vael and the Sundering Peaks. (world.md)
-- The River Kell flows south through Tasren to the sea. (ch_02)
--->
+### Kael (Protagonist)
+- **Age:** 24 (He was 12 when his mother died 12 years ago).
+- **Role:** Black market Siphoner in the Lower Wards.
+- **Family:** Younger brother, Elara (14). Mother is deceased.
+- **Motivation:** To buy passage out of Oakhaven for him and Elara.
+- **Physical/Behavioral:** Clinical, steady-handed. Uses words like "cortex," "dregs," "siphon." Frequently asks clients, "Are you sure?"
 
-## Timeline
-<!-- Example:
-- The Sundering happened 300 years before the story begins. (world.md)
-- Kael is 23 at story start. (characters.md)
-- The siege of Vael happened when Kael was 7. (ch_04)
-- Ch 1-3 span approximately 2 weeks. (outline.md)
--->
+### Lira (Deuteragonist)
+- **Role:** Street-smart appraiser in the Lower Wards.
+- **Ability:** A "Whisperer." Can hear the emotional resonance of empty vials/used Siphons. Cannot extract or consume.
+- **Family:** Father was a political dissident, punished via "Complete Siphon" (became a husk).
+- **Motivation:** To steal the central memory ledger and fund a Blank Slate uprising.
+- **Physical/Behavioral:** Hums a tuneless melody when stressed. Fast-talking, street slang mixed with poetic descriptions.
 
-## Magic System Rules
-<!-- Example:
-- All magic costs blood or memory. No exceptions. (world.md, HARD RULE)
-- A shaper cannot affect living flesh, only dead matter. (world.md)
-- Using the old tongue draws the attention of the Hollow. (ch_03)
--->
+### Magistrate Vane (Antagonist)
+- **Role:** Head of the Cortex Elite's supply chain and the Enforcers.
+- **Background:** Grew up in the Lower Wards, sold his siblings' memories to climb the ranks.
+- **Motivation:** To eradicate the black market and enforce mandatory extraction quotas.
+- **Physical/Behavioral:** Highly educated, formal, aristocratic. Pauses to sip memory fluid from a vial.
 
-## Character Facts
-<!-- Example:
-- Kael is left-handed. (ch_01)
-- Vessa has a scar across her left palm. (ch_01)
-- Moren cannot read. He hides this. (characters.md)
-- Kael's mother died in the siege of Vael. (characters.md)
--->
+### Elara (Supporting)
+- **Age:** 14.
+- **Role:** Kael's younger brother.
+- **Motivation:** To earn his own way and stop being a burden to Kael.
+- **Physical/Behavioral:** Observant, naive, stutters slightly when lying or hiding something.
 
-## Political / Factional
-<!-- Example:
-- The Accord of Tasren was signed by three of the five houses. (world.md)
-- House Drennan controls the salt trade. (world.md)
-- The Temple does not recognize secular law within its walls. (ch_05)
--->
-
-## Cultural
-<!-- Example:
-- In Tasren, the dead are burned, never buried. (world.md)
-- Naming a child before its first moon is considered bad luck. (ch_06)
-- The color white is associated with mourning, not black. (world.md)
--->
-
-## Established In-Story (things that happened in chapters)
-<!-- Example:
-- Kael killed the messenger in ch_03. This cannot be undone.
-- Vessa revealed her tattoo to Moren in ch_07. He now knows.
-- The bridge at Ashenmoor was destroyed in ch_09. It's gone.
--->
+## Factions & Society
+- **The Cortex Elite:** Wealthy merchants/politicians in the Upper Wards. Control legal memory banks.
+- **The Siphon Cartels:** Black market operators in the Lower Wards. Deal in illegal extractions and dregs.
+- **The Blank Slate:** Radical cult of Hollows/Whisperers aiming to destroy the memory banks and release all memories.
+- **The Enforcers (Grey Coats):** Brutal police force paid in combat memories. Loyal to the vault controllers.
+- **The Hollows:** People who have sold too many memories, losing their humanity.
+- **Festival of the Empty Cup:** Annual Lower Wards holiday where people try to guess what they've lost while drinking.
+- **Complete Siphon:** The ultimate punishment; extracting an entire lifetime, turning the victim into a labor husk.
