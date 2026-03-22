@@ -12,7 +12,7 @@ on:
       branch:
         description: 'Novel branch to work on'
         required: false
-        default: 'main'
+        default: 'master'
         type: string
 
 concurrency:
@@ -29,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.branch || 'main' }}
+          ref: ${{ inputs.branch || 'master' }}
           fetch-depth: 0
           token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
 
