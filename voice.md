@@ -120,38 +120,36 @@ The agent proposes a voice that serves THIS story, writes exemplar
 passages, and calibrates against them throughout drafting.
 
 ### Tone
-<!-- Generated during foundation. Examples:
-     "Mythic and weighty, like stone tablets being read aloud."
-     "Warm, slightly breathless, like a traveler telling stories by firelight."
-     "Spare and cold. Sentences like knife cuts." -->
+Sparse, melancholic, and deeply grounded in sensory loss. Sentences should feel like they are missing something just out of reach. The narrative voice is observant of small, immediate details but struggles with the wider context of history or abstract concepts, reflecting a world where memories are currency and slowly being burned away. It should feel intimate, cold, and quiet, like a room where a fire has just gone out.
 
 ### Sentence Rhythm
-<!-- Generated during foundation. Not rules -- tendencies.
-     "Long sentences for worldbuilding, short for violence."
-     "Dialogue is clipped. Narration flows." -->
+Sentences are generally short, blunt, and declarative when describing action or the present moment. Longer, winding sentences appear only when characters try to hold onto a fleeting memory or describe a complex emotion before it slips away. The rhythm should mirror the stop-and-start nature of someone trying to recall a word they’ve forgotten.
 
 ### Vocabulary Register
-<!-- Generated during foundation. The word-hoard for this world.
-     What does this world SOUND like? Anglo-Saxon blunt? Latinate
-     baroque? Colloquial modern? A mix? -->
+Rooted in physical sensations, decay, and preservation. Words like *ash, splinter, fade, hollow, anchor, thread, scrape, ghost, rust, blur*. Anglo-Saxon heavy. Avoid Latinate or overly intellectual words when describing the present. The vocabulary of magic should sound like the vocabulary of fire and burning—consumption, smoke, leaving behind a husk.
 
 ### POV and Tense
-<!-- Generated during foundation.
-     Third limited? First? Rotating? Omniscient?
-     Past tense? Present? Does it shift for effect? -->
+Third-person limited. Past tense. The POV should feel tightly restricted to the protagonist’s immediate sensory experience. Internal monologue should be sparse; thoughts are conveyed through physical reactions and observations of the environment.
 
 ### Dialogue Conventions
-<!-- Generated during foundation.
-     Tags: "said" only? Action beats? No tags at all?
-     How do characters sound different from each other?
-     Subtext rules: do characters say what they mean? -->
+Tags are minimal; mostly action beats. Dialogue is characterized by what isn’t said. Characters hesitate, trail off, or use placeholder words when they can’t find the right specific noun. Conversations should feel transactional and guarded. People do not speak eloquently about their feelings because articulating a feeling risks cementing it, making it easier to burn.
 
 ### Exemplar Passages
-<!-- 3-5 paragraphs that ARE the voice. Written during foundation.
-     The agent calibrates every chapter against these.
-     These are the tuning fork. -->
+He found the wooden top under the floorboards of the old nursery. It was painted blue, the paint chipping at the edges. He turned it over in his hand. He knew it was his, knew he must have spun it on the hardwood when he was small enough to fit under the window seat. He could feel the shape of the joy it used to bring, an empty space in his chest exactly the size of a spinning top, but the face of the woman who painted it was gone. Burned away three winters ago to light a fire that kept him from freezing.
+
+"I need to buy passage," she said.
+The ferryman didn't look up from his knot. "Costs a first kiss."
+She touched her lips. "I don't have that anymore."
+"A childhood pet, then."
+She closed her eyes. The terrier. Rough coat, smelled of rain. She held the image tight, felt the sharp pull behind her eyes, the sudden rush of heat in her blood, and then the dog was just a word. *Dog*. Meaningless. She opened her eyes. "Done."
+
+The city of Oakhaven smelled of old paper and stale water. The streets were narrow, the cobblestones uneven and slick with a constant, unseasonal mist. Men with grey eyes sat in doorways, staring at nothing, their hands moving through the motions of trades they had forgotten. A baker kneading empty air. A smith striking an imaginary anvil. The cost of a warm winter.
 
 ### Anti-Exemplars
-<!-- 3-5 paragraphs showing what this voice is NOT.
-     Not the generic anti-slop stuff above -- specific to this novel.
-     "This is too flowery for our tone." "This is too modern." -->
+*Anti-Exemplar (Too flowery and abstract):*
+The profound sorrow of his lost childhood weighed heavily upon his soul, a multifaceted tapestry of grief that he could not elucidate. He embarked upon his journey with a heavy heart, hoping to find a paradigm shift in his existence.
+*(Why it fails: Too many banned words, abstract emotions instead of concrete sensory details, reads like AI slop.)*
+
+*Anti-Exemplar (Too modern and colloquial):*
+"Okay, so here's the deal," Kael said, crossing his arms. "If we're going to use magic to get out of this mess, we need to optimize our memory usage. I'm not blowing my memory of my first date just to pick a lock."
+*(Why it fails: Phrases like "here's the deal" and "optimize our memory usage" break the grounded, archaic tone. It treats the magic system too much like a video game mechanic rather than a profound personal loss.)*

@@ -17,52 +17,47 @@ it's a database.
 ---
 
 ## Geography
-<!-- Example:
-- Vael is 12 days' ride north of Tasren. (world.md)
-- The Ashenmoor lies between Vael and the Sundering Peaks. (world.md)
-- The River Kell flows south through Tasren to the sea. (ch_02)
--->
+- Oakhaven is the capital city, built in a crater from the War of Ash. (world.md)
+- The Ward of Glass is the inner ring of Oakhaven where the wealthy live. (world.md)
+- The Slips is the outer ring of Oakhaven, muddy and grey. (world.md)
+- The Bleached Wastes surround Oakhaven, made of compressed ash. (world.md)
 
 ## Timeline
-<!-- Example:
-- The Sundering happened 300 years before the story begins. (world.md)
-- Kael is 23 at story start. (characters.md)
-- The siege of Vael happened when Kael was 7. (ch_04)
-- Ch 1-3 span approximately 2 weeks. (outline.md)
--->
+- The War of Ash happened 300 years before the story begins. (world.md)
+- Elian is 26 at story start. (characters.md)
+- Taran is 14 at story start. (characters.md)
+- Elian burned the memory of his mother's face during the winter of '94. (characters.md)
 
 ## Magic System Rules
-<!-- Example:
-- All magic costs blood or memory. No exceptions. (world.md, HARD RULE)
-- A shaper cannot affect living flesh, only dead matter. (world.md)
-- Using the old tongue draws the attention of the Hollow. (ch_03)
--->
+- Magic (Kindling) requires burning a lived experience/memory. (world.md, HARD RULE)
+- A burned memory is permanently erased from the caster's mind. (world.md, HARD RULE)
+- Burning a memory removes the capacity to feel the associated emotion. (world.md, HARD RULE)
+- You cannot burn a fact learned from a book or someone else's memory. (world.md, HARD RULE)
+- A spell's power is proportional to the emotional weight of the memory burned. (world.md, HARD RULE)
+- Burning a memory leaves a physical residue smelling of ozone and sweet old paper. (world.md)
+- Elian can "skim" emotional resonance from others without burning the memory itself. (characters.md, HARD RULE)
 
 ## Character Facts
-<!-- Example:
-- Kael is left-handed. (ch_01)
-- Vessa has a scar across her left palm. (ch_01)
-- Moren cannot read. He hides this. (characters.md)
-- Kael's mother died in the siege of Vael. (characters.md)
--->
+- Elian is highly skilled at extracting maximum magic from mundane memories. (characters.md)
+- Taran is training to be a Maker. (characters.md)
+- Taran has been secretly selling minor memories to buy food. (characters.md)
+- Silas Thorne is a fence for the Cinder Syndicate. (characters.md)
+- Silas burned the memory of his entire marriage. (characters.md)
+- Magistrate Vane uses torture-memories to power city wards. (characters.md)
 
 ## Political / Factional
-<!-- Example:
-- The Accord of Tasren was signed by three of the five houses. (world.md)
-- House Drennan controls the salt trade. (world.md)
-- The Temple does not recognize secular law within its walls. (ch_05)
--->
+- The Keepers are the ruling class, advocating for strict state-licensed magic. (world.md)
+- The Cinder Syndicate is a black-market organization dealing in illegal experiences. (world.md)
+- The Archivists are a religious order covered in tattoos to prevent forgetting. (world.md)
+- Forcing a memory burn from another person is highly illegal (punishable by the White Room). (world.md)
+- A "Memory Tithe" is demanded from the poorest citizens by Vane. (outline.md)
 
 ## Cultural
-<!-- Example:
-- In Tasren, the dead are burned, never buried. (world.md)
-- Naming a child before its first moon is considered bad luck. (ch_06)
-- The color white is associated with mourning, not black. (world.md)
--->
+- The Hollowed are citizens who have burned too much of their past, losing their minds and skills. (world.md)
+- Citizens carry Ledgers to write down daily events. (world.md)
+- Speaking fondly of the past (Nostalgia) is taboo and dangerous. (world.md)
+- Food in the Slips is intentionally bland. (world.md)
+- Ash Moths are attracted to the residue of recent spells. (world.md)
 
 ## Established In-Story (things that happened in chapters)
-<!-- Example:
-- Kael killed the messenger in ch_03. This cannot be undone.
-- Vessa revealed her tattoo to Moren in ch_07. He now knows.
-- The bridge at Ashenmoor was destroyed in ch_09. It's gone.
--->
+<!-- To be populated as chapters are drafted -->
