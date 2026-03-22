@@ -182,3 +182,35 @@ autonovel/
   _paths.py           # repo root resolution
   state.json          # pipeline state (single source of truth)
 ```
+
+---
+
+## Output Format Rules
+
+**Use Markdown. Never TeX.**
+
+All agent output must be in Markdown with YAML front matter. No LaTeX, no PDF generation, no `.tex` files.
+
+The canonical output format is:
+
+```markdown
+---
+title: "Chapter Title"
+chapter: 01
+phase: draft
+score: null
+---
+
+Chapter content here...
+```
+
+**Why:** Markdown files can be directly published as a blog (Astro, Jekyll, etc.) without any conversion step. TeX is a dead end — it requires a build toolchain and produces a PDF nobody asked for.
+
+**Specifically:**
+- Chapters → `chapters/ch_01.md`, `chapters/ch_02.md`, etc. (with front matter)
+- Briefs → `briefs/ch_01_brief.md` (with front matter)
+- Summaries → `arc_summary.md` (plain Markdown)
+- Manuscripts → `manuscript.md` (concatenated chapters, plain Markdown)
+- **Never create:** `.tex`, `.pdf`, `typeset/` directory, any LaTeX files
+
+If you find yourself reaching for `\begin{document}`, stop. Write Markdown instead.
