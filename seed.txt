@@ -9,3 +9,24 @@ MISSION FOR AGENT:
 2. Gather details about his interests, philosophy, tone, and public work to ground the protagonist's internal voice.
 3. DO NOT scrape or access private workspace files, diaries, or internal logs. Keep this private.
 4. Generate foundation docs (`world.md`, `characters.md`, `outline.md`, `canon.md`, `voice.md`) incorporating this public persona as the core protagonist.
+
+## TRANSMEDIA STRATEGY
+
+This is not just a novel. The same story must be told across multiple media simultaneously:
+
+- **Novel** (prose chapters) — the canonical narration
+- **Podcast** (audio letters) — the father's voice reading his own records; the children's voice from the future analyzing them
+- **Twitter/X threads** — fragmented posts that seem random but construct the story. The father posts without knowing he is being observed.
+- **WhatsApp messages** — simulated chat transcripts between father and children (across time)
+- **Newsletter/blog** — the father's essays, the very records the children use to simulate him
+- **Instagram** — visual memory fragments with captions
+
+Each medium has a different level of narrative awareness:
+- Twitter: father unaware
+- Novel: omniscient view
+- Podcast: children in future analyzing the father's records
+- Newsletter: raw archive
+
+The autonovel agents must generate all these formats from the same canon/outline/characters. Each new medium is a plugin. When new media formats emerge, agents adapt the story.
+
+Build the pipeline so each foundation document has a section: "How this adapts to each medium."
