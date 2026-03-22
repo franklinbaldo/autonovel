@@ -12,7 +12,7 @@
     "voice_fingerprint.py"
   ],
   "reads": ["seed.txt", "voice.md", "CRAFT.md", "MYSTERY.md"],
-  "writes": ["world.md", "characters.md", "outline.md", "canon.md", "voice.md"],
+  "writes": ["seed.txt", "world.md", "characters.md", "outline.md", "canon.md", "voice.md"],
   "source_repo": "franklinbaldo/autonovel",
   "session_reuse": true,
   "max_active_sessions": 1
