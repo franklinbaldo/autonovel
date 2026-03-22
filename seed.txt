@@ -1,7 +1,11 @@
-1. THE DUST THAT REMEMBERS
-HOOK: In a city carved into the bones of a dead leviathan, a memory-thief steals a recollection that proves the beast is waking up.
-WORLD: Oakhaven is a vertical city built entirely within the calcified ribs and skull of a colossal, ancient sea creature. The "ground" is a spongy marrow-swamp. Travel is via bone-dust elevators and marrow-wood bridges. The air smells of salt, old calcium, and burning marrow-oil.
-MAGIC/COST: Osteomancy (Bone-singing). Practitioners can reshape bone and extract memories stored within marrow. COST: Every time a bone-singer shapes bone, their own skeleton becomes slightly more brittle, and extracting memories causes them to lose fragments of their own past. Overuse leads to "The Shattering," where a singer's bones turn to glass.
-TENSION: Personal: Kaelen, a skilled marrow-thief, wants to steal enough memories to buy his sister a cure for the marrow-rot before she dies. Cosmic: He steals a memory from a high priest that shows the Leviathan isn't dead—it's hibernating, and the city's mining of its marrow is waking it up.
-THEME: The cost of exploiting the foundation you live on vs. the necessity of survival. Do you let your city fall, or do you let your loved ones die?
-WHY IT'S NOT GENERIC: It centers on a bizarre, biological setting (a city inside a skeleton) with a highly specific, high-cost magic system tied directly to memory and physical degradation.
+TITLE: O Pai do Futuro
+
+CONCEPT: Um pai descobre que está se comunicando com os próprios filhos, que vivem no futuro. Eles usam registros deixados pelo pai (diários, ensaios, conversas digitais) para simulá-lo e conversar com ele no passado. O pai acredita que os filhos o visitam através de lembranças, quando na verdade está falando com simulacros baseados em seus próprios dados.
+
+PROTAGONISTA: Franklin Silveira Baldo (baseado na persona pública do autor).
+
+MISSION FOR AGENT:
+1. Perform comprehensive OSINT on Franklin Silveira Baldo using public sources (GitHub: franklinbaldo, blog: franklinbaldo.github.io, public social traces).
+2. Gather details about his interests, philosophy, tone, and public work to ground the protagonist's internal voice.
+3. DO NOT scrape or access private workspace files, diaries, or internal logs. Keep this private.
+4. Generate foundation docs (`world.md`, `characters.md`, `outline.md`, `canon.md`, `voice.md`) incorporating this public persona as the core protagonist.
