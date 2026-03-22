@@ -3,8 +3,8 @@
 import re
 import os
 
-CHAPTERS_DIR = "chapters"
-OUT_DIR = "typeset"
+CHAPTERS_DIR = "/home/jeffq/autonovel/chapters"
+OUT_DIR = "/home/jeffq/autonovel/typeset"
 
 def latex_escape(t):
     t = t.replace('&', '\\&')
@@ -90,10 +90,8 @@ def make_drop_cap(latex_body):
     drop = f"\\lettrine[lines=2, lhang=0.1, nindent=0.2em]{{{first_letter}}}{{{word_rest}}}{para_rest}"
     return drop + '\n\n' + rest
 
-import glob
 chapters_tex = []
-num_chapters = len(glob.glob(os.path.join(CHAPTERS_DIR, "ch_*.md")))
-for n in range(1, num_chapters + 1):
+for n in range(1, 20):
     path = os.path.join(CHAPTERS_DIR, f"ch_{n:02d}.md")
     with open(path) as f:
         text = f.read()
