@@ -6,8 +6,18 @@
     "build_outline.py",
     "build_arc_summary.py"
   ],
-  "reads": ["chapters/ch_*.md", "outline.md"],
-  "writes": ["outline.md", "arc_summary.md", "manuscript.md"],
+  "reads": [
+    "chapters/ch_*.md",
+    "outline.md"
+  ],
+  "writes": [
+    "outline.md",
+    "arc_summary.md",
+    "manuscript.md",
+    "typeset/*.py",
+    "typeset/*.tex",
+    "typeset/*.pdf"
+  ],
   "source_repo": "franklinbaldo/autonovel",
   "session_reuse": false,
   "max_active_sessions": 1
