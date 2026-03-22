@@ -155,3 +155,39 @@ passages, and calibrates against them throughout drafting.
 <!-- 3-5 paragraphs showing what this voice is NOT.
      Not the generic anti-slop stuff above -- specific to this novel.
      "This is too flowery for our tone." "This is too modern." -->
+
+## Part 2: Voice Identity (generated per novel)
+
+### Tone
+Gritty, sensory, and claustrophobic, but shot through with moments of grotesque beauty. The tone should feel like breathing in bone dust—heavy, dry, and ancient. It is grounded in the physical reality of a city built inside a corpse, focusing on the tactile and olfactory sensations of decay and extraction.
+
+### Sentence Rhythm
+Sentences should often be short and percussive during action or moments of high stress, reflecting the brittle nature of the characters' bones and the harshness of their environment. During moments of Osteomancy or when describing the leviathan, sentences should become longer, rhythmic, and slightly hypnotic, mimicking the "splitting the chord" magic system.
+
+### Vocabulary Register
+Rooted in anatomy, geology, and physical labor. Words related to bone (calcified, marrow, porous, brittle, ossified, splinter), heat (slag, forge, simmer, scorch), and extraction (siphon, bleed, core, scrape). Avoid clean, generic fantasy terms (e.g., "enchantment," "realm," "mystic").
+
+### POV and Tense
+Third-person limited, past tense. The narrative stays tightly within the POV character's physical and emotional experience. We only know what they perceive, feel, and remember (or forget). The camera is close, focusing on sweat, the ache in joints, the smell of burning oil.
+
+### Dialogue Conventions
+*   **Tags:** Lean heavily on action beats rather than "said/asked," unless clarity is needed.
+*   **Contractions:** Common in the Rib Slums (Kaelen, Jax, Lyra). The Ivory Ward (Lord Vane) speaks with formal precision, avoiding contractions entirely.
+*   **Subtext:** Characters rarely say exactly what they mean, especially regarding their memories or the pain of Osteomancy. They speak around the trauma.
+
+### Exemplar Passages
+
+Kaelen knelt in the shadow of the fifth rib, the air thick with the sweet, rotting-meat stink of cheap slag-marrow. He pressed his knuckles against the porous surface of the bridge. Two taps. Respect for the Pale God, and a check for rot. The bone rang dull and heavy beneath his skin. He closed his eyes, found the root of his own collarbone with his mind, and hummed the first note low in his throat.
+
+The bridge groaned. Kaelen split the chord, forcing the second note higher, sharper, until it vibrated against the back of his teeth. The ache blossomed instantly in his left shoulder—a deep, cold hollowing out. Calcium leached from his own marrow, flowing down his arm and into the leviathan's rib. The bridge warped, bending like hot wax to form a narrow ledge over the drop. Kaelen gasped, the dual tones dying in his mouth. He leaned against the newly formed strut, his own collarbone screaming in protest. It was thinner now. Brittle.
+
+"You're bleeding yourself dry, thief," Jax muttered, stepping onto the ledge. He didn't look down at the toxic fog swirling a hundred feet below. "Vane's guards will hear that frequency three districts over."
+
+Kaelen didn't answer. He couldn't. He was too busy trying to remember if the ache in his shoulder felt this hollow yesterday, or if he'd just forgotten how much of himself he'd already given away.
+
+### Anti-Exemplars
+
+*What NOT to do (Too clean, generic fantasy, AI slop):*
+Kaelen embarked on a multifaceted endeavor to utilize his magical powers. The realm of Ostrum was a rich tapestry of intricate politics and profound mysteries. He felt a sense of determination wash over him as he galvanized his robust abilities to optimize the bone bridge, seamlessly facilitating his escape from the pivotal conflict.
+
+*(Why it fails: Uses banned slop words, tells instead of shows emotion ("sense of determination"), lacks sensory grounding in the specific world of bone and marrow, entirely generic.)*
