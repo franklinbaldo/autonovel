@@ -33,14 +33,30 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
 
+      - name: Check terminal pipeline state
+        id: pipeline
+        shell: bash
+        run: |
+          PHASE="$(python -c 'import json; print(json.load(open("state.json")).get("phase", "foundation"))')"
+          echo "phase=$PHASE"
+          if [[ "${{ github.event_name }}" == "schedule" && "$PHASE" == "complete" ]]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Pipeline is complete; scheduled heartbeat is a terminal no-op."
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/setup-python@v5
+        if: steps.pipeline.outputs.run == 'true'
         with:
           python-version: '3.12'
 
       - name: Install dependencies
+        if: steps.pipeline.outputs.run == 'true'
         run: pip install requests
 
       - name: Run heartbeat
+        if: steps.pipeline.outputs.run == 'true'
         env:
           JULES_API_KEY: ${{ secrets.JULES_API_KEY }}
           GH_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
@@ -51,9 +67,11 @@ jobs:
           python scripts/heartbeat.py "$MODE"
 
       - name: Pull latest (PRs may have been merged)
+        if: steps.pipeline.outputs.run == 'true'
         run: git pull --rebase --autostash || true
 
       - name: Commit heartbeat log and session state
+        if: steps.pipeline.outputs.run == 'true'
         run: |
           git config user.name "autonovel-bot"
           git config user.email "autonovel-bot@users.noreply.github.com"
