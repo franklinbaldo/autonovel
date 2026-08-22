@@ -157,6 +157,18 @@
             border-color: #c8941e;
         }
 
+        .btn[aria-disabled="true"] {
+            opacity: 0.55;
+            pointer-events: none;
+            cursor: default;
+        }
+
+        .release-note {
+            margin-top: 0.9rem;
+            font-size: 0.95rem;
+            color: #999080;
+        }
+
         .download-buttons,
         .cta-buttons {
             display: flex;
@@ -264,11 +276,12 @@
         </p>
     </div>
 
-    <div class="download-buttons">
-        <a href="about:empty" class="btn btn-primary">Download PDF</a>
-        <a href="about:empty" class="btn">ePub</a>
-        <a href="about:empty" class="btn">Audiobook</a>
+    <div class="download-buttons" aria-label="Publication status">
+        <span class="btn btn-primary" aria-disabled="true">PDF not published</span>
+        <span class="btn" aria-disabled="true">ePub not published</span>
+        <span class="btn" aria-disabled="true">Audiobook not published</span>
     </div>
+    <p class="release-note">The source branch contains the completed manuscript and regenerable export inputs; downloadable release binaries have not been published here yet.</p>
 </section>
 
 <section class="explainer">
@@ -285,8 +298,7 @@
     </div>
 
     <div class="cta-buttons">
-        <a href="about:empty" class="btn btn-primary">Hermes Agent</a>
-        <a href="about:empty" class="btn">autonovel on GitHub</a>
+        <a href="https://github.com/franklinbaldo/autonovel" class="btn btn-primary">autonovel on GitHub</a>
     </div>
 </section>
 
